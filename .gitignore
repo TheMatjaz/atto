@@ -1,0 +1,5 @@
+# Doxygen build
+docs/
+
+# Cmake build
+cmake-build-*/
