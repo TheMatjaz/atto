@@ -27,7 +27,7 @@ Atto is born to remove all of that complexity. Heavily inspired by
 [MinUnit](http://www.jera.com/techinfo/jtns/jtn002.html), which has just 3
 lines of code, Atto is just a header file you can include statically
 (copy-paste) in your project and start writing your tests. Atto is so tiny that
-even its name means ["tiny"](https://en.wikipedia.org/wiki/Atto).
+even [its name means "tiny"](https://en.wikipedia.org/wiki/Atto-).
 
 The output is basic, but enough: indicates just where the test case failed, by
 filename and line number. Open that file, go to that line. There is the error.
