@@ -6,7 +6,8 @@ without `malloc()`, without dependencies, ready for embedded systems that
 can at least call `printf`.
 
 Most probably you will understand most about Atto if you just read its
-file: `atto.h`. I mean, **it's 20 lines of code...**
+file: [`atto.h`](atto.h). I mean, **it's 20 lines of code...**, except
+for the documentation.
 
 
 
@@ -20,8 +21,9 @@ true (e.g. a value is in the allowed range).
 There are so many complex unit test frameworks to do this in C and C++
 which just increases complexity of the whole project. Suppose you are just
 writing a simple program and want to test it. Oh boy! Start managing the
-dependencies for the framework, be sure that you can install it. Maybe use
-Docker and whatever else.
+dependencies for the framework, check if you can install it, maybe you need
+Docker etc. Some frameworks even require `fork()` - how could that work on
+an embedded system?
 
 Atto is born to remove all of that complexity. Heavily inspired by
 [MinUnit](http://www.jera.com/techinfo/jtns/jtn002.html), which has just 3
@@ -50,20 +52,21 @@ Only the C standard library!
 How to use
 ----------------------------------------
 
-An example usage is available in the [`example.c`](example.c) file!
+An **example usage** is available in the [`example.c`](example.c) file!
 
 1. Add `atto.h` to your project.
 2. Create a file with your tests, say `test.c`, which will contain and run
    your tests.
-3. Add a main to `test.c` which returns `atto_at_least_one_fail`. By doing
+3. Add a `main()` to `test.c` which returns `atto_at_least_one_fail`. By doing
    so, the return value will be 1 in case at least 1 test failed. Very useful
    when running the tests in a pipeline that should stop when something is
-   broken.
+   broken. Of course on embedded systems one can use `atto_at_least_one_fail`
+   in different ways, as there is no returning from `main`.
 4. Add test case functions returning `void` to `test.c`.
 5. In each test case call `atto_assert()`, `atto_fapprox()`, `atto_flag()` etc.
    to verify the values you are testing. On a fail, the test case is terminated
    (by a `return`).
-6. Call the test case functions from the `main`.
+6. Call the test case functions from the `main()`.
 7. Compile `test.c` and run it.
 
 

@@ -1,7 +1,7 @@
 BSD 3-Clause License
 ===============================================================================
 
-Copyright © 2019, Matjaž Guštin <dev@matjaz.it> <http://matjaz.it>.  
+Copyright © 2019, Matjaž Guštin <dev@matjaz.it> <https://matjaz.it>.  
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
