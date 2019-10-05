@@ -54,7 +54,7 @@ extern "C"
  * so that the test executable returns non-zero in case at least one test
  * failed.
  */
-static char atto_at_least_one_fail = 0U;
+static char atto_at_least_one_fail = 0;
 
 /**
  * Absolute tolerance when comparing two single-precision floating point
@@ -96,6 +96,14 @@ static char atto_at_least_one_fail = 0U;
     } \
 } while (0)
 
+#define atto_false(x) atto_assert(!(x))
+#define atto_eq(a, b) atto_assert((a) == (b))
+#define atto_neq(a, b) atto_assert((a) != (b))
+#define atto_gt(a, b) atto_assert((a) > (b))
+#define atto_ge(a, b) atto_assert((a) >= (b))
+#define atto_lt(a, b) atto_assert((a) < (b))
+#define atto_le(a, b) atto_assert((a) <= (b))
+
 /**
  * Verifies if two single-precision floating point values are closer than
  * the float absolute tolerance #ATTO_FLOAT_EQ_ABSTOL.
@@ -110,6 +118,7 @@ static char atto_at_least_one_fail = 0U;
  * ```
  */
 #define atto_fapprox(a, b) atto_assert(fabsf((a)-(b)) <= ATTO_FLOAT_EQ_ABSTOL)
+#define atto_fdelta(a, b, delta) atto_assert(fabsf((a) - (b)) <= fabsf(delta))
 
 /**
  * Verifies if two double-precision floating point values are closer than
@@ -125,6 +134,7 @@ static char atto_at_least_one_fail = 0U;
  * ```
  */
 #define atto_dapprox(a, b) atto_assert(fabs((a)-(b)) <= ATTO_DOUBLE_EQ_ABSTOL)
+#define atto_ddelta(a, b, delta) atto_assert(fabs((a) - (b)) <= fabs(delta))
 
 /**
  * Verifies if the bits of the value specified as a bit mask is set to 1.
