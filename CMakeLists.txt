@@ -16,3 +16,4 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wswitch-enum -Wuninitialized -Wshadow")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wdouble-promotion -Wpacked")
 
 add_executable(atto_example example.c)
+add_executable(atto_selftest selftest.c)
