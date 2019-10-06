@@ -44,7 +44,7 @@ extern "C"
 #define ATTO_VERSION "1.0.0"
 
 #include <stdio.h>  /* For printf() */
-#include <math.h>   /* For fabs(), fabsf() */
+#include <math.h>   /* For fabs(), fabsf(), isnan(), isinf(), isfinite() */
 #include <string.h> /* For strncmp() */
 
 /**
@@ -84,6 +84,10 @@ static char atto_at_least_one_fail = 0;
  * specific, try using the other macros instead.
  *
  * The `do-while(0)` construct allows to write multi-line macros.
+ *
+ * If your system does not support `printf()`, replace it with something
+ * else in this file! For example a `transmit()` function to communicate
+ * the result to other devices.
  *
  * Example:
  * ```
@@ -270,6 +274,13 @@ static char atto_at_least_one_fail = 0;
  * ```
  */
 #define atto_dapprox(a, b) atto_ddelta((a), (b), ATTO_DOUBLE_EQ_ABSTOL)
+
+#define atto_nan(value) atto_assert(isnan(value))
+#define atto_plusinf(value) atto_assert((isinf(value)) && (value > 0))
+#define atto_minusinf(value) atto_assert((isinf(value)) && (value < 0))
+#define atto_inf(value) atto_assert(isinf(value))
+#define atto_notfinite(value) atto_assert(!isfinite(value))
+#define atto_finite(value) atto_assert(isfinite(value))
 
 /**
  * Verifies if the bits of the value specified by a bit mask are set to 1.
