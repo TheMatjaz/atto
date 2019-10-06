@@ -7,7 +7,7 @@
 
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = Atto
-PROJECT_NUMBER         = v1.0.0
+PROJECT_NUMBER         = v1.1.0
 PROJECT_BRIEF          = "The microscopic C unit test framework"
 PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = docs/
@@ -231,9 +231,7 @@ GENERATE_TAGFILE       =
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
 EXTERNAL_PAGES         = YES
-PERL_PATH              = /usr/bin/perl
 CLASS_DIAGRAMS         = YES
-MSCGEN_PATH            =
 DIA_PATH               =
 HIDE_UNDOC_RELATIONS   = YES
 HAVE_DOT               = NO
