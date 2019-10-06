@@ -88,7 +88,7 @@ static void test_case_forced_fail(void)
 int main(void)
 {
     printf("Failures should appear on lines: %d, %d, %d, %d, %d, %d\n",
-           18, 30, 48, 59, 71, 82);
+           19, 31, 49, 60, 72, 83);
     test_case_ints();
     test_case_flags();
     test_case_floats_and_doubles();
