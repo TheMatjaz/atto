@@ -10,32 +10,7 @@
 #include "atto.h"
 #include <stdint.h>
 
-#define MAX_FAILING_LINES 100U
-static uint16_t failing_lines[MAX_FAILING_LINES] = {0};
-static uint16_t failing_lines_count = 0U;
-
-static void add_failing_line(const uint16_t line_number)
-{
-    if (failing_lines_count > MAX_FAILING_LINES)
-    {
-        puts("Exceeded number of possible failing lines!");
-    } else
-    {
-        failing_lines[failing_lines_count++] = line_number;
-    }
-}
-
-static void print_failing_lines(void)
-{
-    printf("Failures should appear on lines: %d", failing_lines[0]);
-    for (uint16_t i = 1U; i < failing_lines_count; i++)
-    {
-        printf(", %d", failing_lines[i]);
-    }
-    puts(".");
-}
-
-#define SHOULD_FAIL(x) add_failing_line(__LINE__); x
+#define SHOULD_FAIL(failing) printf("Expected failure: "); failing
 
 static void test_initially_no_test_have_failed(void)
 {
@@ -257,6 +232,5 @@ int main(void)
     test_fail();
     test_at_the_end_some_tests_have_failed();
 
-    print_failing_lines();
-    return 0;  /* Returns 1 as some tests failed. */
+    return 0;
 }
