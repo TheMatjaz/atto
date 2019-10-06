@@ -147,6 +147,33 @@ static void test_ddelta_negatives(void)
     SHOULD_FAIL(atto_ddelta(-1.0, -1.1, 0.01));
 }
 
+static void test_nan(void)
+{
+    atto_nan(NAN);
+    atto_nan(nan(""));
+    atto_nan(nanf(""));
+}
+
+static void test_nan_finite_int(void)
+{
+    SHOULD_FAIL(atto_nan(1));
+}
+
+static void test_nan_finite_float(void)
+{
+    SHOULD_FAIL(atto_nan(1.0f));
+}
+
+static void test_nan_finite_double(void)
+{
+    SHOULD_FAIL(atto_nan(1.0));
+}
+
+static void test_nan_infinity(void)
+{
+    SHOULD_FAIL(atto_nan(INFINITY));
+}
+
 static void test_flag(void)
 {
     atto_flag(1, 1);
@@ -249,6 +276,11 @@ int main(void)
     test_dapprox();
     test_ddelta();
     test_ddelta_negatives();
+    test_nan();
+    test_nan_finite_int();
+    test_nan_finite_float();
+    test_nan_finite_double();
+    test_nan_infinity();
     test_flag();
     test_flag_when_none();
     test_noflag();
