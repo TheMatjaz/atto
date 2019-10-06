@@ -174,6 +174,87 @@ static void test_nan_infinity(void)
     SHOULD_FAIL(atto_nan(INFINITY));
 }
 
+static void test_inf(void)
+{
+    atto_inf(INFINITY);
+    atto_inf(+INFINITY);
+    atto_inf(-INFINITY);
+}
+
+static void test_inf_finite_int(void)
+{
+    SHOULD_FAIL(atto_inf(1));
+}
+
+static void test_inf_finite_float(void)
+{
+    SHOULD_FAIL(atto_inf(1.0f));
+}
+
+static void test_inf_finite_double(void)
+{
+    SHOULD_FAIL(atto_inf(1.0));
+}
+
+static void test_inf_nan(void)
+{
+    SHOULD_FAIL(atto_inf(NAN));
+}
+
+static void test_plusinf(void)
+{
+    atto_plusinf(INFINITY);
+    atto_plusinf(+INFINITY);
+    SHOULD_FAIL(atto_plusinf(-INFINITY));
+}
+
+static void test_plusinf_finite_int(void)
+{
+    SHOULD_FAIL(atto_plusinf(1));
+}
+
+static void test_plusinf_finite_float(void)
+{
+    SHOULD_FAIL(atto_plusinf(1.0f));
+}
+
+static void test_plusinf_finite_double(void)
+{
+    SHOULD_FAIL(atto_plusinf(1.0));
+}
+
+static void test_plusinf_nan(void)
+{
+    SHOULD_FAIL(atto_plusinf(NAN));
+}
+
+
+static void test_minusinf(void)
+{
+    atto_minusinf(-INFINITY);
+    SHOULD_FAIL(atto_minusinf(INFINITY));
+}
+
+static void test_minusinf_finite_int(void)
+{
+    SHOULD_FAIL(atto_minusinf(1));
+}
+
+static void test_minusinf_finite_float(void)
+{
+    SHOULD_FAIL(atto_minusinf(1.0f));
+}
+
+static void test_minusinf_finite_double(void)
+{
+    SHOULD_FAIL(atto_minusinf(1.0));
+}
+
+static void test_minusinf_nan(void)
+{
+    SHOULD_FAIL(atto_minusinf(NAN));
+}
+
 static void test_flag(void)
 {
     atto_flag(1, 1);
@@ -281,6 +362,21 @@ int main(void)
     test_nan_finite_float();
     test_nan_finite_double();
     test_nan_infinity();
+    test_inf();
+    test_inf_finite_int();
+    test_inf_finite_float();
+    test_inf_finite_double();
+    test_inf_nan();
+    test_plusinf();
+    test_plusinf_finite_int();
+    test_plusinf_finite_float();
+    test_plusinf_finite_double();
+    test_plusinf_nan();
+    test_minusinf();
+    test_minusinf_finite_int();
+    test_minusinf_finite_float();
+    test_minusinf_finite_double();
+    test_minusinf_nan();
     test_flag();
     test_flag_when_none();
     test_noflag();
