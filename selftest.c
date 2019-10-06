@@ -138,7 +138,6 @@ static void test_ddelta_negatives(void)
 
 static void test_flag(void)
 {
-    // TODO this fails. Should it? atto_flag(0, 0);
     atto_flag(1, 1);
     atto_flag(0xFF, 1);
     atto_flag(0xFF, 2);
@@ -150,6 +149,13 @@ static void test_flag(void)
     SHOULD_FAIL(atto_flag(0x0F, 0x30));
 }
 
+static void test_flag_when_none(void)
+{
+    /* atto_flag() checks for flag presence. To check for their absence,
+     * atto_noflag() should be used instead; or even atto_eq(flags, 0). */
+    SHOULD_FAIL(atto_flag(0, 0));
+}
+
 static void test_noflag(void)
 {
     atto_noflag(0, 1);
@@ -157,6 +163,7 @@ static void test_noflag(void)
     atto_noflag(3, 8);
     atto_noflag(0x0F, 0xF0);
     atto_noflag(0xFF, 0);
+    atto_noflag(0, 0);
     SHOULD_FAIL(atto_noflag(0x0F, 1));
 }
 
@@ -226,6 +233,7 @@ int main(void)
     test_ddelta();
     test_ddelta_negatives();
     test_flag();
+    test_flag_when_none();
     test_noflag();
     test_streq();
     test_memeq();
