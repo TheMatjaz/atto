@@ -32,14 +32,20 @@ static void test_false(void)
 
 static void test_eq(void)
 {
-    atto_eq(100, 100);
+    atto_eq(12, 12);
+    atto_eq(12.0f, 12U);
     SHOULD_FAIL(atto_eq(100, 1));
 }
 
 static void test_neq(void)
 {
-    atto_neq(1, 100);
-    SHOULD_FAIL(atto_neq(100, 100));
+    atto_neq(100, 1);
+    SHOULD_FAIL(atto_neq(12, 12));
+}
+
+static void test_neq_casting(void)
+{
+    SHOULD_FAIL(atto_neq(12.0f, 12U));
 }
 
 static void test_gt(void)
@@ -89,6 +95,7 @@ static void test_le_equality(void)
 static void test_fapprox(void)
 {
     atto_fapprox(1.0f, 1.0f);
+    atto_fapprox(1.0f, 1U);
     atto_fapprox(1.0f, 1.000001f);
     SHOULD_FAIL(atto_fapprox(1.0f, 1.1f));
 }
@@ -96,7 +103,9 @@ static void test_fapprox(void)
 static void test_fdelta(void)
 {
     atto_fdelta(1.0f, 1.0f, 0.01f);
+    atto_fdelta(1.0f, 1.1f, 0.15f);
     atto_fdelta(1.0f, 1.000001f, 0.01f);
+    atto_fdelta(1.0f, 1.00000001f, 0.1f);
     SHOULD_FAIL(atto_fdelta(1.0f, 1.1f, 0.01f));
 }
 
@@ -114,12 +123,14 @@ static void test_fdelta_negatives(void)
 static void test_dapprox(void)
 {
     atto_dapprox(1.0, 1.0);
+    atto_dapprox(1.0, 1U);
     atto_dapprox(1.0, 1.00000001);
     SHOULD_FAIL(atto_dapprox(1.0, 1.1));
 }
 
 static void test_ddelta(void)
 {
+    atto_ddelta(1.0, 1.1, 0.15);
     atto_ddelta(1.0, 1.0, 0.01);
     atto_ddelta(1.0, 1.000001, 0.01);
     SHOULD_FAIL(atto_ddelta(1.0, 1.1, 0.01));
@@ -146,7 +157,10 @@ static void test_flag(void)
     atto_flag(0xFF, 0xFF);
     atto_flag(0x18, 0x08);
     atto_flag(0x18, 0x10);
-    SHOULD_FAIL(atto_flag(0x0F, 0x30));
+    atto_flag(0x07, 1 << 1);
+    atto_flag(0x07, 0x04);
+    atto_flag(0x07, 0x06);
+    SHOULD_FAIL(atto_flag(0x07, 0xF0));
 }
 
 static void test_flag_when_none(void)
@@ -164,14 +178,16 @@ static void test_noflag(void)
     atto_noflag(0x0F, 0xF0);
     atto_noflag(0xFF, 0);
     atto_noflag(0, 0);
-    SHOULD_FAIL(atto_noflag(0x0F, 1));
+    atto_noflag(0x07, 1 << 5);
+    atto_noflag(0x07, 0xF8);
+    SHOULD_FAIL(atto_noflag(0x07, 0x04));
 }
 
 static void test_streq(void)
 {
     const char a[] = "hello";
     const char b[] = "hello";
-    const char c[] = "WORLD";
+    const char c[] = "HELLO";
 
     atto_streq(a, b, 0);
     atto_streq(a, b, 1);
@@ -218,6 +234,7 @@ int main(void)
     test_false();
     test_eq();
     test_neq();
+    test_neq_casting();
     test_gt();
     test_gt_equality();
     test_ge();

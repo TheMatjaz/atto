@@ -218,7 +218,7 @@ static char atto_at_least_one_fail = 0;
  * Example:
  * ```
  * atto_fdelta(1.0f, 1.00000001f, 0.1f);  // Passes
- * atto_fdelta(1.0f, 1.1f, 0.1f);         // Passes
+ * atto_fdelta(1.0f, 1.1f, 0.15f);        // Passes
  * atto_fdelta(1.0f, 2.0f, 0.1f);         // Fails
  * ```
  */
@@ -234,8 +234,8 @@ static char atto_at_least_one_fail = 0;
  *
  * Example:
  * ```
- * atto_fapprox(1.0f, 1.00000001f);  // Passes
- * atto_fapprox(1.0f, 1.1);          // Fails
+ * atto_fapprox(1.0f, 1.000001f);  // Passes
+ * atto_fapprox(1.0f, 1.1);        // Fails
  * ```
  */
 #define atto_fapprox(a, b) atto_fdelta((a), (b), ATTO_FLOAT_EQ_ABSTOL)
@@ -249,7 +249,7 @@ static char atto_at_least_one_fail = 0;
  * Example:
  * ```
  * atto_ddelta(1.0, 1.00000001, 0.1);  // Passes
- * atto_ddelta(1.0, 1.1, 0.1);         // Passes
+ * atto_ddelta(1.0, 1.1, 0.15);        // Passes
  * atto_ddelta(1.0, 2.0, 0.1);         // Fails
  * ```
  */
@@ -265,8 +265,8 @@ static char atto_at_least_one_fail = 0;
  *
  * Example:
  * ```
- * atto_dapprox(1.0, 1.0000000001);  // Passes
- * atto_dapprox(1.0, 1.1);           // Fails
+ * atto_dapprox(1.0, 1.00000001);  // Passes
+ * atto_dapprox(1.0, 1.1);         // Fails
  * ```
  */
 #define atto_dapprox(a, b) atto_ddelta((a), (b), ATTO_DOUBLE_EQ_ABSTOL)
