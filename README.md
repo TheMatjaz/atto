@@ -12,7 +12,7 @@ excluded.
 
 
 
-Why should I use Atto instead of _\<other framework\>_?
+Why should I use Atto instead of \<other framework\>?
 -------------------------------------------------------
 
 The goal of a unit test is generally very simple: verify that the obtained
@@ -34,7 +34,9 @@ even [its name means "tiny"](https://en.wikipedia.org/wiki/Atto-).
 
 The output is basic, but enough: indicates just where the test case failed, by
 filename and line number. Open that file, go to that line. There is the error.
-Done. Passing tests are not printed, to avoid cluttering the output.
+Start using the debugger around that point.
+
+Passing tests are not printed, to avoid cluttering the output.
 
 
 
@@ -44,18 +46,22 @@ Dependencies
 Only the C standard library!
 
 - `stdio.h`, for `printf()` - if your system does not have it, replace the
-  **one** call of `printf()` with something else!
+  **one** call of `printf()` in `atto.h` with something else!
 - `math.h`, for `fabs()`, `fabsf()`, `isnan()`, `isinf()`, `isfinite()`
 - `string.h`, for `strncmp()`
 
 **No `malloc()` or `fork()` required**
 
 
+
 How to use
 ----------------------------------------
 
-Use it in your test cases like in this example file where we test the `sqrt()`
-function from `math.h`:
+### Basic idea and example
+
+Use the `atto_*` macros in your test cases.
+
+Here is an example where we test the `sqrt()` function from `math.h`:
 
 ```c
 #include <math.h>
@@ -63,9 +69,14 @@ function from `math.h`:
 
 void test_sqrt_valid_values(void)
 {
+    atto_eq(0.0, sqrt(0.0));
     atto_eq(1.0, sqrt(1.0));
     atto_eq(2.0, sqrt(4.0));
     atto_ddelta(1.4142, sqrt(2.0), 0.001);
+    atto_ddelta(1.7321, sqrt(3.0), 1e-8); // This fails!
+                                          // 1.7321 is not accurate enough
+                                          // The test case stops here.
+    atto_ddelta(2.2361, sqrt(5.0), 1e-8); // This is NOT executed!
 }
 
 void test_sqrt_negative_values(void)
@@ -81,22 +92,26 @@ int main(void)
 }
 ```
 
-An **example usage** is available in the [`example.c`](example.c) file!
 
-1. Add `atto.h` to your project.
-2. Create a file with your tests, say `test.c`, which will contain and run
-   your tests.
-3. Add a `main()` to `test.c` which returns `atto_at_least_one_fail`. By doing
-   so, the return value will be 1 in case at least 1 test failed. Very useful
-   when running the tests in a pipeline that should stop when something is
-   broken. Of course on embedded systems one can use `atto_at_least_one_fail`
-   in different ways, as there is no returning from `main`.
-4. Add test case functions returning `void` to `test.c`.
-5. In each test case call `atto_assert()`, `atto_fapprox()`, `atto_flag()` etc.
+### Complete recipe
+
+1. Add the file `atto.h` to your project.
+2. Create a file with your tests, say `test.c`.
+3. Add test case functions returning `void` to `test.c`, as the two
+  `test_sqrt_*` functions in the example above.
+4. In each test case call `atto_assert()`, `atto_eq()`, `atto_flag()` etc.
    to verify the values you are testing. On a fail, the test case is terminated
-   (by a `return`).
+   early and the following code is not executed.
+5. Add a `main()` function to `test.c` which returns `atto_at_least_one_fail`.
+   By doing so, the exit code of the test executable will be `1` in case at 
+   least one test failed. Particularly useful when running the test executables
+   in a pipeline that should stop when something is broken. Of course on 
+   embedded systems one can use `atto_at_least_one_fail` in different ways, as
+   there is no returning from `main`; for example by transmitting it via
+   other UART.
 6. Call the test case functions from the `main()`.
-7. Compile `test.c` and run it.
+7. Compile `test.c` into an executable and run it.
+8. Check its standard output and the process exit code for failed tests.
 
 
 ### A test case is failing. Now what?
@@ -111,3 +126,16 @@ FAIL | File: /my/home/folder/a_project/test.c | Line:  182 | Test case: test_val
 2. Go to line 182 (use some keyboard shortcut), which is in the function
    `test_valid_input_length()`
 3. The assertion on that specific line failed. Now up to you to debug why.
+   The easiest way is to place a debugger breakpoint earlier in the test case.
+   
+Once the standard output does not contains any `FAIL` lines and the exit code
+of the process is `0`, you are good to go!
+
+
+### This framework does not fit my needs!
+
+It may not be the best solution for your scenario - it was born for my
+personal projects and I needed something simple. You are more than welcome
+to customize the `atto.h` file to your needs within your project or simply
+to use other frameworks.
+ 
