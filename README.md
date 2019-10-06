@@ -2,12 +2,13 @@ Atto - the microscopic C unit test framework
 ===============================================================================
 
 Atto is the simplest-to-use C unit test framework, in just one header file,
-without `malloc()`, without dependencies, ready for embedded systems that
-can at least call `printf`.
+without `malloc()`, without `fork()`, without dependencies, ready for
+embedded systems that can at least call `printf()`. And even those who cannot,
+can easily adapt it!
 
 Most probably you will understand most about Atto if you just read its
-file: [`atto.h`](atto.h). I mean, **it's 20 lines of code...**, except
-for the documentation.
+file: [`atto.h`](atto.h). I mean, **it's just 34 lines of code**, documentation
+excluded.
 
 
 
@@ -26,8 +27,8 @@ Docker etc. Some frameworks even require `fork()` - how could that work on
 an embedded system?
 
 Atto is born to remove all of that complexity. Heavily inspired by
-[MinUnit](http://www.jera.com/techinfo/jtns/jtn002.html), which has just 3
-lines of code, Atto is just a header file you can include statically
+[MinUnit](http://www.jera.com/techinfo/jtns/jtn002.html), which has **just 3
+lines of code**, Atto is just a header file you can include statically
 (copy-paste) in your project and start writing your tests. Atto is so tiny that
 even [its name means "tiny"](https://en.wikipedia.org/wiki/Atto-).
 
@@ -42,15 +43,43 @@ Dependencies
 
 Only the C standard library!
 
-- `stdio.h`, for `printf()`
-- `math.h`, for `fabs()`, `fabsf()`
+- `stdio.h`, for `printf()` - if your system does not have it, replace the
+  **one** call of `printf()` with something else!
+- `math.h`, for `fabs()`, `fabsf()`, `isnan()`, `isinf()`, `isfinite()`
 - `string.h`, for `strncmp()`
 
-**No `malloc()` required**
+**No `malloc()` or `fork()` required**
 
 
 How to use
 ----------------------------------------
+
+Use it in your test cases like in this example file where we test the `sqrt()`
+function from `math.h`:
+
+```c
+#include <math.h>
+#include "atto.h"
+
+void test_sqrt_valid_values(void)
+{
+    atto_eq(1.0, sqrt(1.0));
+    atto_eq(2.0, sqrt(4.0));
+    atto_ddelta(1.4142, sqrt(2.0), 0.001);
+}
+
+void test_sqrt_negative_values(void)
+{
+    atto_nan(sqrt(-1.0));
+}
+
+int main(void)
+{
+    test_sqrt_valid_values();
+    test_sqrt_negative_values();
+    return atto_at_least_one_fail;
+}
+```
 
 An **example usage** is available in the [`example.c`](example.c) file!
 
