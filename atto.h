@@ -41,7 +41,7 @@ extern "C"
 /**
  * Semantic version of this file and framework.
  */
-#define ATTO_VERSION "1.0.0"
+#define ATTO_VERSION "1.1.0"
 
 #include <stdio.h>  /* For printf() */
 #include <math.h>   /* For fabs(), fabsf(), isnan(), isinf(), isfinite() */
