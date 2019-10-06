@@ -38,14 +38,14 @@ More specialized macros for operators and floats, simpler examples, self test.
   - Value is -Infinity `atto_minusinf(x)`
   - Value is NaN or +/- Infinity `atto_notfinite(x)`
   - Value is anything but Nan or +/- Infinity `atto_finite(x)`
-- Proper [self-test](selftest.c) of the whole Atto framework.
+- Proper self-test `selftest.c` of the whole Atto framework.
 - More compiler flags to check for errors during compilation of the self-test.
 
 
 ### Removed
 
 - `example.c` test file. Instead a simpler example is provided within the
-  [Readme](README.md)
+  Readme.
 
 
 
