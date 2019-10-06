@@ -58,7 +58,7 @@ static char atto_at_least_one_fail = 0;
 
 /**
  * Absolute tolerance when comparing two single-precision floating point
- * value for approximate-equality
+ * value for approximate-equality using atto_fapprox().
  *
  * If the difference between the two float values is bigger than this
  * tolerance, the assertion fails.
@@ -67,7 +67,7 @@ static char atto_at_least_one_fail = 0;
 
 /**
  * Absolute tolerance when comparing two double-precision floating point
- * value for approximate-equality.
+ * value for approximate-equality using atto_dapprox().
  *
  * If the difference between the two double values is bigger than this
  * tolerance, the assertion fails.
