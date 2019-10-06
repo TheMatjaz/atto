@@ -228,7 +228,6 @@ static void test_plusinf_nan(void)
     SHOULD_FAIL(atto_plusinf(NAN));
 }
 
-
 static void test_minusinf(void)
 {
     atto_minusinf(-INFINITY);
@@ -253,6 +252,71 @@ static void test_minusinf_finite_double(void)
 static void test_minusinf_nan(void)
 {
     SHOULD_FAIL(atto_minusinf(NAN));
+}
+
+static void test_notfinite(void)
+{
+    atto_notfinite(INFINITY);
+    atto_notfinite(+INFINITY);
+    atto_notfinite(-INFINITY);
+    atto_notfinite(NAN);
+    atto_notfinite(nanf(""));
+    atto_notfinite(nan(""));
+}
+
+static void test_notfinite_finite_int(void)
+{
+    SHOULD_FAIL(atto_notfinite(1));
+}
+
+static void test_notfinite_finite_float(void)
+{
+    SHOULD_FAIL(atto_notfinite(1.0f));
+}
+
+static void test_notfinite_finite_double(void)
+{
+    SHOULD_FAIL(atto_notfinite(1.0));
+}
+
+static void test_finite(void)
+{
+    atto_finite(0);
+    atto_finite(0.0f);
+    atto_finite(-0.0f);
+    atto_finite(0.0);
+    atto_finite(-0.0);
+    atto_finite(1);
+    atto_finite(1.0f);
+    atto_finite(1.0);
+    atto_finite(-1);
+    atto_finite(-1.0f);
+    atto_finite(-1.0);
+}
+
+static void test_finite_plusinf(void)
+{
+    SHOULD_FAIL(atto_finite(INFINITY));
+}
+
+static void test_finite_minusinf(void)
+{
+    SHOULD_FAIL(atto_finite(-INFINITY));
+}
+
+static void test_finite_nan_macro(void)
+{
+    SHOULD_FAIL(atto_finite(NAN));
+}
+
+static void test_finite_nan_call(void)
+{
+    SHOULD_FAIL(atto_finite(nan("")));
+}
+
+static void test_finite_nanf_call(void)
+{
+    SHOULD_FAIL(atto_finite(nanf("")));
 }
 
 static void test_flag(void)
@@ -377,6 +441,16 @@ int main(void)
     test_minusinf_finite_float();
     test_minusinf_finite_double();
     test_minusinf_nan();
+    test_notfinite();
+    test_notfinite_finite_int();
+    test_notfinite_finite_float();
+    test_notfinite_finite_double();
+    test_finite();
+    test_finite_plusinf();
+    test_finite_minusinf();
+    test_finite_nan_macro();
+    test_finite_nanf_call();
+    test_finite_nan_call();
     test_flag();
     test_flag_when_none();
     test_noflag();

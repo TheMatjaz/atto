@@ -279,8 +279,9 @@ static char atto_at_least_one_fail = 0;
 #define atto_plusinf(value) atto_assert((isinf(value)) && (value > 0))
 #define atto_minusinf(value) atto_assert((isinf(value)) && (value < 0))
 #define atto_inf(value) atto_assert(isinf(value))
-#define atto_notfinite(value) atto_assert(!isfinite(value))
 #define atto_finite(value) atto_assert(isfinite(value))
+#define atto_notfinite(value) atto_assert(!isfinite(value))
+
 
 /**
  * Verifies if the bits of the value specified by a bit mask are set to 1.
