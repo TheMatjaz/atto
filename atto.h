@@ -275,13 +275,104 @@ static char atto_at_least_one_fail = 0;
  */
 #define atto_dapprox(a, b) atto_ddelta((a), (b), ATTO_DOUBLE_EQ_ABSTOL)
 
+/**
+ * Verifies that the floating point value is Not a Number (NaN).
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_nan(NAN);        // Passes
+ * atto_nan(INFINITY);   // Fails
+ * atto_nan(-INFINITY);  // Fails
+ * atto_nan(1.0);        // Fails
+ * atto_nan(1);          // Fails
+ * ```
+ */
 #define atto_nan(value) atto_assert(isnan(value))
-#define atto_plusinf(value) atto_assert((isinf(value)) && (value > 0))
-#define atto_minusinf(value) atto_assert((isinf(value)) && (value < 0))
-#define atto_inf(value) atto_assert(isinf(value))
-#define atto_finite(value) atto_assert(isfinite(value))
-#define atto_notfinite(value) atto_assert(!isfinite(value))
 
+/**
+ * Verifies that the floating point value is infinity, either positive or
+ * negative.
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_inf(NAN);        // Fails
+ * atto_inf(INFINITY);   // Passes
+ * atto_inf(-INFINITY);  // Passes
+ * atto_inf(1.0);        // Fails
+ * atto_inf(1);          // Fails
+ * ```
+ */
+#define atto_inf(value) atto_assert(isinf(value))
+
+/**
+ * Verifies that the floating point value is positive infinity.
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_plusinf(NAN);        // Fails
+ * atto_plusinf(INFINITY);   // Passes
+ * atto_plusinf(-INFINITY);  // Fails
+ * atto_plusinf(1.0);        // Fails
+ * atto_plusinf(1);          // Fails
+ * ```
+ */
+#define atto_plusinf(value) atto_assert((isinf(value)) && (value > 0))
+
+/**
+ * Verifies that the floating point value is negative infinity.
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_minusinf(NAN);        // Fails
+ * atto_minusinf(INFINITY);   // Fails
+ * atto_minusinf(-INFINITY);  // Passes
+ * atto_minusinf(1.0);        // Fails
+ * atto_minusinf(1);          // Fails
+ * ```
+ */
+#define atto_minusinf(value) atto_assert((isinf(value)) && (value < 0))
+
+/**
+ * Verifies that the floating point value is finite, thus not NaN or
+ * +/- infinity.
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_finite(NAN);        // Fails
+ * atto_finite(INFINITY);   // Fails
+ * atto_finite(-INFINITY);  // Fails
+ * atto_finite(1.0);        // Passes
+ * atto_finite(1);          // Passes
+ * ```
+ */
+#define atto_finite(value) atto_assert(isfinite(value))
+
+/**
+ * Verifies that the floating point value is not finite, thus either NaN or
+ * +/- infinity.
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_notfinite(NAN);        // Passes
+ * atto_notfinite(INFINITY);   // Passes
+ * atto_notfinite(-INFINITY);  // Passes
+ * atto_notfinite(1.0);        // Fails
+ * atto_notfinite(1);          // Fails
+ * ```
+ */
+#define atto_notfinite(value) atto_assert(!isfinite(value))
 
 /**
  * Verifies if the bits of the value specified by a bit mask are set to 1.
