@@ -1,8 +1,8 @@
 /**
  * @file
- * Example usage of `atto.h` and also the test for Atto itself.
+ * Example usage of Atto and also the test for Atto itself.
  *
- * @copyright Copyright © 2019, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-clause license.
  */
