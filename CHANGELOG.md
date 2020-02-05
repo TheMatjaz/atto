@@ -8,6 +8,37 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+*******************************************************************************
+
+[1.2.0] - 2020-02-05
+----------------------------------------
+
+Two more macros, some project structure changes (new `atto.c` file, new `src/` 
+folder).
+
+
+### Added
+
+- `atto_memneq(a, b, len)`, the negation of `atto_memeq()`, checks that two
+  memory segments are not equal.
+- `atto_zeros(x, len)` checks that a memory segment is filled with zeros.
+
+
+### Fixed
+
+- Move `atto_at_least_one_fail` variable into new separate `atto.c` file.
+  Required as importing `atto.h` file in many locations leads to many _static_
+  copies of the same variable to be set, which means that different files see
+  a different variable.
+- Move selftest into subfolder `tst/`, moved `atto.h` and `atto.c` into `src/`
+  Required as when incorporating this whole project (or repo)
+  into another C project, the IDE may interpret selftest.c as part
+  of the main project, while it's not relevant.
+  With this trick, one can set the atto/src folder as the only relevant
+  one.
+- Variety of minor fixes in the readme.
+
+
 
 [1.1.0] - 2019-10-06
 ----------------------------------------

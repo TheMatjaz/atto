@@ -7,7 +7,7 @@ embedded systems that can at least call `printf()`. And even those who cannot,
 can easily adapt it!
 
 Most probably you will understand most about Atto if you just read its
-file: [`atto.h`](src/atto.h). I mean, **it's just 29 macros**.
+header: [`atto.h`](src/atto.h). I mean, **it's just 29 macros**.
 
 
 
