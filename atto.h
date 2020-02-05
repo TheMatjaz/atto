@@ -257,7 +257,8 @@ extern char atto_at_least_one_fail;
  * atto_ddelta(1.0, 2.0, 0.1);         // Fails
  * ```
  */
-#define atto_ddelta(a, b, delta) atto_assert(fabs((a) - (b)) <= fabs(delta))
+#define atto_ddelta(a, b, delta) \
+    atto_assert(fabs((a) - (b)) <= fabs(delta))
 
 /**
  * Verifies if two double-precision floating point values are within a fixed
@@ -417,7 +418,8 @@ extern char atto_at_least_one_fail;
  * atto_streq("abcd", "ABCD", 4);    // Fails, different casing
  * ```
  */
-#define atto_streq(a, b, maxlen) atto_assert(strncmp((a), (b), (maxlen)) == 0)
+#define atto_streq(a, b, maxlen) \
+    atto_assert(strncmp((a), (b), (maxlen)) == 0)
 
 /**
  * Verifies if two memory sections are equal up to a given length.
@@ -433,6 +435,40 @@ extern char atto_at_least_one_fail;
  * ```
  */
 #define atto_memeq(a, b, len) atto_assert(memcmp((a), (b), len) == 0)
+
+/**
+* Verifies if two memory sections are different within the given length.
+*
+* Otherwise stops the test case and reports on standard output.
+*
+* Example:
+* ```
+* atto_memneq("abcd", "abcd", 2);    // Fails
+* atto_memneq("abcd", "abcd", 4);    // Fails
+* atto_memneq("abcd", "abcd", 100);  // UNDEFINED as exceeding known memory
+* atto_memneq("abcd", "abCD", 4);    // Passes
+* ```
+*/
+#define atto_memneq(a, b, len) atto_assert(memcmp((a), (b), len) != 0)
+
+/**
+* Verifies if a memory section is filled with just zeros.
+*
+* Otherwise stops the test case and reports on standard output.
+*
+* Example:
+* ```
+* atto_zeros("abcd", 2);        // Fails
+* atto_zeros("\0\0cd", 2);      // Passes
+* atto_zeros("\0\0cd", 4);      // Fails
+* atto_zeros("\0\0\0\0", 4);    // Passes
+* atto_zeros("\0\0\0\0", 100);  // UNDEFINED as exceeding known memory
+* ```
+*/
+#define atto_zeros(x, len) \
+    for (unsigned long long atto_idx = 0; atto_idx < (len); atto_idx ++) { \
+        atto_eq((x)[atto_idx], 0); \
+    }
 
 /**
  * Forces a failure of the test case, stopping it and reporting on standard
