@@ -1,5 +1,7 @@
 # Doxygen build
 docs/
+html/
+latex/
 
 # Cmake build
 cmake-build-*/

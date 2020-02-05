@@ -1,13 +1,13 @@
 /**
  * @file
- * Example usage of `atto.h` and also the test for Atto itself.
+ * Example usage of Atto and also the test for Atto itself.
  *
- * @copyright Copyright © 2019, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-clause license.
  */
 
-#include "atto.h"
+#include "../src/atto.h"
 #include <stdint.h>
 
 #define SHOULD_FAIL(failing) printf("Expected failure: "); failing
@@ -386,7 +386,46 @@ static void test_memeq(void)
     atto_memeq(a, b, 4);
     atto_memeq(a, b, 5);
     atto_memeq("", "", 0);
+    atto_memeq("abcd", "abcd", 2);
+    atto_memeq("abcd", "abcd", 4);
     SHOULD_FAIL(atto_memeq(c, a, 5));
+    SHOULD_FAIL(atto_memeq("abcd", "ABCD", 4));
+}
+
+static void test_memneq(void)
+{
+    const uint8_t a[] = {255, 255, 255, 255, 255};
+    const uint8_t b[] = {255, 255, 255, 255, 255};
+    const uint8_t c[] = {11, 22, 33, 44, 55};
+
+    atto_memneq(a, c, 1);
+    atto_memneq(a, c, 2);
+    atto_memneq(a, c, 3);
+    atto_memneq(a, c, 4);
+    atto_memneq(a, c, 5);
+    atto_memneq("abcd", "ABcd", 2);
+    atto_memneq("abcd", "ABcd", 4);
+    atto_memneq("abcd", "abcD", 4);
+    SHOULD_FAIL(atto_memneq(a, b, 5));
+    SHOULD_FAIL(atto_memneq("abcd", "abcd", 4));
+    SHOULD_FAIL(atto_memneq(a, c, 0));
+}
+
+static void test_zeros(void)
+{
+    const uint8_t a[] = {0, 0, 0, 0, 0};
+    const uint8_t b[] = {0, 0, 255, 255, 255};
+    const uint8_t c[] = {11, 22, 33, 0, 0};
+
+    atto_zeros(a, 0);
+    atto_zeros(a, 1);
+    atto_zeros(a, 2);
+    atto_zeros(a, 3);
+    atto_zeros(a, 4);
+    atto_zeros(a, 5);
+    atto_zeros(b, 2);
+    SHOULD_FAIL(atto_zeros(b, 5));
+    SHOULD_FAIL(atto_zeros(c, 5));
 }
 
 static void test_fail(void)
@@ -456,6 +495,8 @@ int main(void)
     test_noflag();
     test_streq();
     test_memeq();
+    test_memneq();
+    test_zeros();
     test_fail();
     test_at_the_end_some_tests_have_failed();
 

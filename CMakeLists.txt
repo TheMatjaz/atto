@@ -1,5 +1,5 @@
 # Atto Cmake configuration file
-# Copyright © 2019, Matjaž Guštin <dev@matjaz.it> <https://matjaz.it>
+# Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it> <https://matjaz.it>
 # All rights reserved.
 # This file is part of the Atto project which is released under
 # the BSD 3-clause license.
@@ -21,4 +21,4 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wlogical-not-parentheses")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Waggregate-return")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-declarations -fPIC")
 
-add_executable(atto_selftest selftest.c)
+add_executable(atto_selftest tst/selftest.c src/atto.c src/atto.h)
