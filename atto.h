@@ -2,7 +2,7 @@
  * @file
  * Atto - the microscopic C unit test framework
  *
- * @copyright Copyright © 2019, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-Clause License
  *
@@ -41,11 +41,11 @@ extern "C"
 /**
  * Semantic version of this file and framework.
  */
-#define ATTO_VERSION "1.1.0"
+#define ATTO_VERSION "1.2.0"
 
 #include <stdio.h>  /* For printf() */
 #include <math.h>   /* For fabs(), fabsf(), isnan(), isinf(), isfinite() */
-#include <string.h> /* For strncmp() */
+#include <string.h> /* For strncmp(), memcmp() */
 
 /**
  * Boolean indicating if all tests passed successfully (when 0) or not.
@@ -54,7 +54,7 @@ extern "C"
  * so that the test executable returns non-zero in case at least one test
  * failed.
  */
-static char atto_at_least_one_fail = 0;
+extern char atto_at_least_one_fail;
 
 /**
  * Absolute tolerance when comparing two single-precision floating point
