@@ -21,4 +21,4 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wlogical-not-parentheses")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Waggregate-return")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-declarations -fPIC")
 
-add_executable(atto_selftest selftest.c)
+add_executable(atto_selftest tst/selftest.c src/atto.c src/atto.h)
