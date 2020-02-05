@@ -7,12 +7,11 @@ embedded systems that can at least call `printf()`. And even those who cannot,
 can easily adapt it!
 
 Most probably you will understand most about Atto if you just read its
-file: [`atto.h`](atto.h). I mean, **it's just 34 lines of code**, documentation
-excluded.
+file: [`atto.h`](src/atto.h). I mean, **it's just 29 macros**.
 
 
 
-Why should I use Atto instead of \<other framework\>?
+Why should I use Atto instead of another framework?
 -------------------------------------------------------
 
 The goal of a unit test is generally very simple: verify that the obtained
@@ -30,7 +29,7 @@ Atto is born to remove all of that complexity. Heavily inspired by
 [MinUnit](http://www.jera.com/techinfo/jtns/jtn002.html), which has **just 3
 lines of code**, Atto is just a header file you can include statically
 (copy-paste) in your project and start writing your tests. Atto is so tiny that
-even [its name means "tiny"](https://en.wikipedia.org/wiki/Atto-).
+even [its name means "tiny"](https://en.wikipedia.org/wiki/Atto-) ;)
 
 The output is basic, but enough: indicates just where the test case failed, by
 filename and line number. Open that file, go to that line. There is the error.
@@ -48,7 +47,7 @@ Only the C standard library!
 - `stdio.h`, for `printf()` - if your system does not have it, replace the
   **one** call of `printf()` in `atto.h` with something else!
 - `math.h`, for `fabs()`, `fabsf()`, `isnan()`, `isinf()`, `isfinite()`
-- `string.h`, for `strncmp()`
+- `string.h`, for `strncmp()`, `memcmp()`
 
 **No `malloc()` or `fork()` required**
 
@@ -95,7 +94,9 @@ int main(void)
 
 ### Complete recipe
 
-1. Add the file `atto.h` to your project.
+1. Add the files `atto.h`, `atto.c` to your project:
+   - you can either copy the whole `src` folder into your project
+   - or use `git subtree` to include this repo into your own
 2. Create a file with your tests, say `test.c`.
 3. Add test case functions returning `void` to `test.c`, as the two
   `test_sqrt_*` functions in the example above.
@@ -107,8 +108,7 @@ int main(void)
    least one test failed. Particularly useful when running the test executables
    in a pipeline that should stop when something is broken. Of course on 
    embedded systems one can use `atto_at_least_one_fail` in different ways, as
-   there is no returning from `main`; for example by transmitting it via
-   other UART.
+   there is no returning from `main`; for example by transmitting it via UART.
 6. Call the test case functions from the `main()`.
 7. Compile `test.c` into an executable and run it.
 8. Check its standard output and the process exit code for failed tests.
@@ -136,6 +136,5 @@ of the process is `0`, you are good to go!
 
 It may not be the best solution for your scenario - it was born for my
 personal projects and I needed something simple. You are more than welcome
-to customize the `atto.h` file to your needs within your project or simply
+to customize it to your needs within your project or simply
 to use other frameworks.
- 
