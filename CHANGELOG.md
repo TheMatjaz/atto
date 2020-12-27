@@ -10,6 +10,34 @@ and this project adheres to
 
 *******************************************************************************
 
+[1.3.0] - 2020-12-27
+----------------------------------------
+
+### Added
+
+- `atto_true()` which simply maps to `atto_assert()` to have an opposite of
+  `atto_false()` with consistent naming.
+
+
+### Changed
+
+- The printed text in case of a failed testcase now combines the filename
+  and the line together in the format like `filename.c:42` with `42` being the
+  line. This allows some IDEs to recognise it as a link to a specific code line
+  and make them clickable for much easier testing and debugging.
+
+
+### Fixed
+
+- `atto_zeros(x, len)` supports any kind of address as `x`, even non `uint8_t*`
+  thus allowing to scan arrays of other integers or floats or strings for
+  zeros without explicitly casting them. They are converted to `uint8_t*`
+  internally.
+
+- Replace Doxyfile with CMake building it instead. Add stricter options.
+
+
+
 [1.2.0] - 2020-02-05
 ----------------------------------------
 

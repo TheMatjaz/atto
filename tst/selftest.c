@@ -23,6 +23,12 @@ static void test_assert(void)
     SHOULD_FAIL(atto_assert(0));
 }
 
+static void test_true(void)
+{
+    atto_true(1);
+    SHOULD_FAIL(atto_true(0));
+}
+
 static void test_false(void)
 {
     atto_false(3000 < 0);
@@ -416,6 +422,7 @@ static void test_zeros(void)
     const uint8_t a[] = {0, 0, 0, 0, 0};
     const uint8_t b[] = {0, 0, 255, 255, 255};
     const uint8_t c[] = {11, 22, 33, 0, 0};
+    const uint32_t d[] = {0, 0, 0};
 
     atto_zeros(a, 0);
     atto_zeros(a, 1);
@@ -424,6 +431,8 @@ static void test_zeros(void)
     atto_zeros(a, 4);
     atto_zeros(a, 5);
     atto_zeros(b, 2);
+    atto_zeros(d, 3 * sizeof(uint32_t));
+    atto_zeros("\0\0\0", 3);
     SHOULD_FAIL(atto_zeros(b, 5));
     SHOULD_FAIL(atto_zeros(c, 5));
 }
@@ -442,6 +451,7 @@ int main(void)
 {
     test_initially_no_test_have_failed();
     test_assert();
+    test_true();
     test_false();
     test_eq();
     test_neq();

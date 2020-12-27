@@ -5,3 +5,4 @@ latex/
 
 # Cmake build
 cmake-build-*/
+build*/

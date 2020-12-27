@@ -7,7 +7,7 @@ embedded systems that can at least call `printf()`. And even those who cannot,
 can easily adapt it!
 
 Most probably you will understand most about Atto if you just read its
-header: [`atto.h`](src/atto.h). I mean, **it's just 29 macros**.
+header: [`atto.h`](src/atto.h). I mean, **it's just 30 macros**.
 
 
 
@@ -48,6 +48,7 @@ Only the C standard library!
   **one** call of `printf()` in `atto.h` with something else!
 - `math.h`, for `fabs()`, `fabsf()`, `isnan()`, `isinf()`, `isfinite()`
 - `string.h`, for `strncmp()`, `memcmp()`
+- `stddef.h` for `size_t`
 
 **No `malloc()` or `fork()` required**
 
@@ -119,10 +120,10 @@ int main(void)
 The output will contain one or more lines like:
 
 ```
-FAIL | File: /my/home/folder/a_project/test.c | Line:  182 | Test case: test_valid_input_length
+FAIL | File: /path/to/some_project/test.c:182 | Test case: test_valid_input_length
 ```
 
-1. Open the file `/my/home/folder/a_project/test.c`
+1. Open the file `/path/to/some_project/test.c`
 2. Go to line 182 (use some keyboard shortcut), which is in the function
    `test_valid_input_length()`
 3. The assertion on that specific line failed. Now up to you to debug why.

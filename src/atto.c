@@ -1,5 +1,6 @@
 /**
  * @file
+ * @internal
  * Atto - the microscopic C unit test framework
  *
  * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
