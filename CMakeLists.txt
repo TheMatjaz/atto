@@ -39,6 +39,7 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -DRELEASE \
 # Source files
 # -----------------------------------------------------------------------------
 set(ATTO_LIB_SRC src/atto.h src/atto.c)
+set(ATTO_DOXYGEN_SRC src/atto.h LICENSE.md CHANGELOG.md)
 set(ATTO_TEST_SRC tst/selftest.c)
 include_directories(AFTER SYSTEM src/)
 
@@ -50,23 +51,47 @@ add_executable(atto_selftest ${ATTO_LIB_SRC} ${ATTO_TEST_SRC})
 
 
 # Doxygen documentation builder
-find_package(Doxygen)
+find_package(Doxygen OPTIONAL_COMPONENTS dot)
 if (DOXYGEN_FOUND)
     # Cmake's wrapper of Doxygen, constructing a doxyfile from the
     # DOXYGEN_* variables, which are mapped to the Doxygen variables.
+
+    # Output format
     set(DOXYGEN_GENERATE_HTML YES)
     set(DOXYGEN_GENERATE_MAN YES)
-    set(DOXYGEN_JAVADOC_AUTOBRIEF YES)
-    set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C YES)
     set(DOXYGEN_SORT_MEMBER_DOCS NO)
-    set(DOXYGEN_IMAGE_PATH ${PROJECT_SOURCE_DIR}/images)
+    set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C YES)
+    set(DOXYGEN_OUTPUT_LANGUAGE English)
+    set(DOXYGEN_OUTPUT_DIRECTORY docs/)
+
+    # Input format
+    set(DOXYGEN_JAVADOC_AUTOBRIEF YES)
     set(DOXYGEN_ALIASES license="**License:**")
+    set(DOXYGEN_EXTRACT_ALL NO)
+    set(DOXYGEN_INPUT_ENCODING UTF-8)
+
+    # Input files
     set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
-    # TODO activate all warnings, upgrade them to errors
+    set(DOXYGEN_EXLCUDE src/atto.c tst/)
+
+    # Turn on all warnings, as errors
+    set(DOXYGEN_WARNINGS YES)
+    set(DOXYGEN_WARN_IF_UNDOCUMENTED YES)
+    set(DOXYGEN_WARN_IF_DOC_ERROR YES)
+    set(DOXYGEN_WARN_IF_NO_PARAMDOC YES)
+    set(DOXYGEN_WARN_AS_ERROR YES)
+
+    # Parallelise
+    set(DOXYGEN_NUM_PROC_THREADS 0)  # Auto set based on CPU
+
+    # Graphviz's dot
+    set(DOXYGEN_DOT_NUM_THREADS 0)  # Auto set based on CPU
+    set(DOXYGEN_DOT_PATH )  # Empty path = search in $PATH
+
+    # Generate command
     doxygen_add_docs(doxygen
                      ALL # Build doxygen on make-all
-                     # List of input files for Doxygen
-                     ${ATTO_LIB_SRC}
+                     ${ATTO_DOXYGEN_SRC} # List of input files for Doxygen
                      )
 else (DOXYGEN_FOUND)
     message(WARNING "Doxygen not found. Cannot generate documentation.")
