@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bsd_203_2dclause_20license_60',['BSD 3-Clause License',['../md__l_i_c_e_n_s_e.html',1,'']]]
+  ['changelog_65',['Changelog',['../md__c_h_a_n_g_e_l_o_g.html',1,'']]]
 ];
