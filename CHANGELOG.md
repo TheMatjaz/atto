@@ -9,9 +9,24 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 *******************************************************************************
+[1.3.1] - 2020-12-27
+----------------------------------------
+
+No changes in the code, only documentation.
+
+### Fixed
+
+- Missing home page of the Doxygen documentation (being the content of the
+  Readme)
+- Missing title of the v1.3.0 release.
+
+
 
 [1.3.0] - 2020-12-27
 ----------------------------------------
+
+Clickable links to failed assertions!
+
 
 ### Added
 

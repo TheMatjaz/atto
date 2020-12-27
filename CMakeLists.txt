@@ -7,7 +7,7 @@
 
 cmake_minimum_required(VERSION 3.9)  # For FindDoxygen
 project(Atto
-        VERSION 1.3.0
+        VERSION 1.3.1
         LANGUAGES C
         DESCRIPTION
         "The microscopic C test framework")
@@ -39,7 +39,7 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -DRELEASE \
 # Source files
 # -----------------------------------------------------------------------------
 set(ATTO_LIB_SRC src/atto.h src/atto.c)
-set(ATTO_DOXYGEN_SRC src/atto.h LICENSE.md CHANGELOG.md)
+set(ATTO_DOXYGEN_SRC src/atto.h LICENSE.md CHANGELOG.md README.md)
 set(ATTO_TEST_SRC tst/selftest.c)
 include_directories(AFTER SYSTEM src/)
 
