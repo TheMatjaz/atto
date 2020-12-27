@@ -9,6 +9,17 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 *******************************************************************************
+[UNRELEASED] - 2020-12-xx
+----------------------------------------
+
+### Fixed
+
+- `atto_zeros(x, len)` supports any kind of address as `x`, even non `uint8_t*`
+  thus allowing to scan arrays of other integers or floats or strings for
+  zeros without explicitly casting them. They are converted to `uint8_t*`
+  internally.
+
+
 
 [1.2.0] - 2020-02-05
 ----------------------------------------

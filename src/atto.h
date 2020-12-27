@@ -46,6 +46,7 @@ extern "C"
 #include <stdio.h>  /* For printf() */
 #include <math.h>   /* For fabs(), fabsf(), isnan(), isinf(), isfinite() */
 #include <string.h> /* For strncmp(), memcmp() */
+#include <stddef.h> /* For size_t */
 
 /**
  * Boolean indicating if all tests passed successfully (when 0) or not.
@@ -437,38 +438,38 @@ extern char atto_at_least_one_fail;
 #define atto_memeq(a, b, len) atto_assert(memcmp((a), (b), len) == 0)
 
 /**
-* Verifies if two memory sections are different within the given length.
-*
-* Otherwise stops the test case and reports on standard output.
-*
-* Example:
-* ```
-* atto_memneq("abcd", "abcd", 2);    // Fails
-* atto_memneq("abcd", "abcd", 4);    // Fails
-* atto_memneq("abcd", "abcd", 100);  // UNDEFINED as exceeding known memory
-* atto_memneq("abcd", "abCD", 4);    // Passes
-* ```
+ * Verifies if two memory sections are different within the given length.
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_memneq("abcd", "abcd", 2);    // Fails
+ * atto_memneq("abcd", "abcd", 4);    // Fails
+ * atto_memneq("abcd", "abcd", 100);  // UNDEFINED as exceeding known memory
+ * atto_memneq("abcd", "abCD", 4);    // Passes
+ * ```
 */
 #define atto_memneq(a, b, len) atto_assert(memcmp((a), (b), len) != 0)
 
 /**
-* Verifies if a memory section is filled with just zeros.
-*
-* Otherwise stops the test case and reports on standard output.
-*
-* Example:
-* ```
-* atto_zeros("abcd", 2);        // Fails
-* atto_zeros("\0\0cd", 2);      // Passes
-* atto_zeros("\0\0cd", 4);      // Fails
-* atto_zeros("\0\0\0\0", 4);    // Passes
-* atto_zeros("\0\0\0\0", 100);  // UNDEFINED as exceeding known memory
-* ```
+ * Verifies if a memory section is filled with just zeros.
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_zeros("abcd", 2);        // Fails
+ * atto_zeros("\0\0cd", 2);      // Passes
+ * atto_zeros("\0\0cd", 4);      // Fails
+ * atto_zeros("\0\0\0\0", 4);    // Passes
+ * atto_zeros("\0\0\0\0", 100);  // UNDEFINED as exceeding known memory
+ * ```
 */
-#define atto_zeros(x, len) \
-    for (unsigned long long atto_idx = 0; atto_idx < (len); atto_idx ++) { \
-        atto_eq((x)[atto_idx], 0); \
-    }
+#define atto_zeros(x, len) do { \
+        for (size_t atto_idx = 0; atto_idx < (len); atto_idx++) \
+        { atto_eq(((uint8_t*)(x))[atto_idx], 0); } \
+    } while(0)
 
 /**
  * Forces a failure of the test case, stopping it and reporting on standard
