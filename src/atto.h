@@ -99,7 +99,7 @@ extern char atto_at_least_one_fail;
  */
 #define atto_assert(expression) do { \
     if (!(expression)) { \
-        printf("FAIL | File: %s | Line: %4d | Test case: %s\n", \
+        printf("FAIL | File: %s:%d | Test case: %s\n", \
                __FILE__, __LINE__, __func__); \
         atto_at_least_one_fail = 1U; \
         return; \
