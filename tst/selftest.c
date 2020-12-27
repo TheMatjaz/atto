@@ -23,6 +23,12 @@ static void test_assert(void)
     SHOULD_FAIL(atto_assert(0));
 }
 
+static void test_true(void)
+{
+    atto_true(1);
+    SHOULD_FAIL(atto_true(0));
+}
+
 static void test_false(void)
 {
     atto_false(3000 < 0);
@@ -445,6 +451,7 @@ int main(void)
 {
     test_initially_no_test_have_failed();
     test_assert();
+    test_true();
     test_false();
     test_eq();
     test_neq();

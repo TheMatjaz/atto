@@ -9,8 +9,15 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 *******************************************************************************
-[UNRELEASED] - 2020-12-xx
+
+[1.3.0] - 2020-12-27
 ----------------------------------------
+
+### Added
+
+- `atto_true()` which simply maps to `atto_assert()` to have an opposite of
+  `atto_false()` with consistent naming.
+
 
 ### Changed
 
@@ -26,6 +33,8 @@ and this project adheres to
   thus allowing to scan arrays of other integers or floats or strings for
   zeros without explicitly casting them. They are converted to `uint8_t*`
   internally.
+
+- Replace Doxyfile with CMake building it instead. Add stricter options.
 
 
 

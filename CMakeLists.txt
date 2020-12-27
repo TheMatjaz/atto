@@ -5,7 +5,7 @@
 # the BSD 3-clause license.
 # -----------------------------------------------------------------------------
 
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.9)  # For FindDoxygen
 project(Atto
         VERSION 1.3.0
         LANGUAGES C

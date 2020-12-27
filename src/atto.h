@@ -41,7 +41,7 @@ extern "C"
 /**
  * Semantic version of this file and framework.
  */
-#define ATTO_VERSION "1.2.0"
+#define ATTO_VERSION "1.3.0"
 
 #include <stdio.h>  /* For printf() */
 #include <math.h>   /* For fabs(), fabsf(), isnan(), isinf(), isfinite() */
@@ -105,6 +105,13 @@ extern char atto_at_least_one_fail;
         return; \
     } \
 } while (0)
+
+/**
+ * Verifies if the given boolean expression is true.
+ *
+ * Just a rename of atto_assert() for consistensy with atto_false().
+ */
+#define atto_true(x) atto_assert(x)
 
 /**
  * Verifies if the given boolean expression is false.
