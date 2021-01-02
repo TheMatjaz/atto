@@ -72,7 +72,7 @@ if (DOXYGEN_FOUND)
 
     # Input files
     set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
-    set(DOXYGEN_EXLCUDE src/atto.c tst/)
+    set(DOXYGEN_EXCLUDE src/atto.c tst/)
 
     # Turn on all warnings, as errors
     set(DOXYGEN_WARNINGS YES)
