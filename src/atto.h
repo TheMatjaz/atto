@@ -109,7 +109,7 @@ extern char atto_at_least_one_fail;
 /**
  * Verifies if the given boolean expression is true.
  *
- * Just a rename of atto_assert() for consistensy with atto_false().
+ * Just a rename of atto_assert() for consistency with atto_false().
  */
 #define atto_true(x) atto_assert(x)
 
@@ -331,7 +331,7 @@ extern char atto_at_least_one_fail;
  * atto_plusinf(1);          // Fails
  * ```
  */
-#define atto_plusinf(value) atto_assert((isinf(value)) && (value > 0))
+#define atto_plusinf(value) atto_assert((isinf(value)) && ((value) > 0))
 
 /**
  * Verifies that the floating point value is negative infinity.
@@ -347,7 +347,7 @@ extern char atto_at_least_one_fail;
  * atto_minusinf(1);          // Fails
  * ```
  */
-#define atto_minusinf(value) atto_assert((isinf(value)) && (value < 0))
+#define atto_minusinf(value) atto_assert((isinf(value)) && ((value) < 0))
 
 /**
  * Verifies that the floating point value is finite, thus not NaN or
