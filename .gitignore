@@ -6,3 +6,6 @@ latex/
 # Cmake build
 cmake-build-*/
 build*/
+
+# CLion
+.idea/
