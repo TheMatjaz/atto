@@ -29,8 +29,9 @@ target_include_directories(atto_selftest PRIVATE src/)
 target_link_libraries(atto_selftest PRIVATE m)
 
 enable_testing()
+if (NOT MSVC)
 add_test(NAME atto_selftest COMMAND atto_selftest)
-
+endif()
 
 # Doxygen documentation builder
 find_package(Doxygen OPTIONAL_COMPONENTS dot)
