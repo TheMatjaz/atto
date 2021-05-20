@@ -7,7 +7,7 @@
  * @license BSD 3-clause license.
  */
 
-#include "../src/atto.h"
+#include "atto.h"
 #include <stdint.h>
 
 #define SHOULD_FAIL(failing) printf("Expected failure: "); failing
@@ -262,7 +262,6 @@ static void test_notfinite_finite_double(void)
 
 static void test_finite(void)
 {
-    atto_finite(0);
     atto_finite(0.0f);
     atto_finite(-0.0f);
     atto_finite(0.0);

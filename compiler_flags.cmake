@@ -64,6 +64,11 @@ else ()
     string(APPEND CMAKE_C_FLAGS " -Wmissing-declarations")  #
     string(APPEND CMAKE_C_FLAGS " -Wnull-dereference")  # Potential NULL pointer dereference
 
+    # Disabled check, as in some self-test cases we want to verify that operating
+    # on limit values, the result is still expected. Mostly atto_zeros() with 0 length.
+    string(APPEND CMAKE_C_FLAGS " -Wno-type-limits") # Suppress warnings about constant expressions due to type limits
+
+
     if ("${CMAKE_C_COMPILER_ID}" STREQUAL "gcc")
         string(APPEND CMAKE_C_FLAGS " -Wduplicate-cond")  # Checking same thing twice
         string(APPEND CMAKE_C_FLAGS " -Wjump-misses-init")  # Switch/goto jump skips variable init
