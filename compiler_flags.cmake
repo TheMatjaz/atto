@@ -22,7 +22,7 @@ if (MSVC)
     # manner to start with, given that the parsed data is fixed (the test vectors).
     # Finally, not every clib implements them, so we cannot assume the compilation succeeds
     # if we use them. Thus, better deactivated.
-    string(APPEND CMAKE_C_FLAGS " -wd4127")  # Suppress warning about constant conditional expr.
+    string(APPEND CMAKE_C_FLAGS " -wd4127 -wd4296")  # Suppress warning about constant conditional expr.
     string(APPEND CMAKE_C_FLAGS " -wd4710 -wd4711")  # Suppress informational warning about inlining
     # MSVC notifies with a warning when the optimised inlines/does not inline a function that
     # is not/is marked for inlining. The warning is informational, thus disabled.
