@@ -26,12 +26,12 @@ add_executable(atto_selftest
                src/atto.c
                tst/selftest.c)
 target_include_directories(atto_selftest PRIVATE src/)
+if (NOT MSVC)
 target_link_libraries(atto_selftest PRIVATE m)
+endif()
 
 enable_testing()
-if (NOT MSVC)
 add_test(NAME atto_selftest COMMAND atto_selftest)
-endif()
 
 # Doxygen documentation builder
 find_package(Doxygen OPTIONAL_COMPONENTS dot)
