@@ -3,7 +3,7 @@
  * @internal
  * Atto - the microscopic C unit test framework
  *
- * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2021, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-Clause License
  *

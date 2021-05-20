@@ -2,7 +2,7 @@
  * @file
  * Atto - the microscopic C unit test framework
  *
- * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2021, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-Clause License
  *
@@ -462,6 +462,8 @@ extern char atto_at_least_one_fail;
 /**
  * Verifies if a memory section is filled with just zeros.
  *
+ * Useful to check whether a memory location has been cleared.
+ *
  * Otherwise stops the test case and reports on standard output.
  *
  * Example:
@@ -476,6 +478,36 @@ extern char atto_at_least_one_fail;
 #define atto_zeros(x, len) do { \
         for (size_t atto_idx = 0; atto_idx < (len); atto_idx++) \
         { atto_eq(((uint8_t*)(x))[atto_idx], 0); } \
+    } while(0)
+
+/**
+ * Verifies if a memory section is not completely filled with zeros
+ * (there is at least one non-zero byte).
+ *
+ * Useful to check whether a memory location has been initialised to non-zero
+ * values, especially for random strings or data from an outside
+ * source we don't know the exact format of.
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_nzeros("abcd", 2);        // Passes
+ * atto_nzeros("\0\0cd", 2);      // Fails
+ * atto_nzeros("\0\0cd", 4);      // Passes
+ * atto_nzeros("\0\0\0\0", 4);    // Fails
+ * atto_nzeros("\0\0c\0", 4);     // Passes
+ * atto_nzeros("a\0c\0", 3);      // Passes
+ * atto_nzeros("\0\0\0\0", 100);  // UNDEFINED as exceeding known memory
+ * ```
+*/
+#define atto_nzeros(x, len) do { \
+        uint8_t __atto_all_zero = 1; \
+        for (size_t __atto_idx = 0; __atto_idx < (len); __atto_idx++) \
+        { if(((uint8_t*)(x))[__atto_idx] != 0) \
+            { __atto_all_zero = 0; break; } \
+        } \
+        atto_false(__atto_all_zero); \
     } while(0)
 
 /**

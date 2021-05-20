@@ -1,5 +1,5 @@
 # Atto Cmake configuration file
-# Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it> <https://matjaz.it>
+# Copyright © 2019-2021, Matjaž Guštin <dev@matjaz.it> <https://matjaz.it>
 # All rights reserved.
 # This file is part of the Atto project which is released under
 # the BSD 3-clause license.

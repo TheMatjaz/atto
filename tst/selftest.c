@@ -2,7 +2,7 @@
  * @file
  * Example usage of Atto and also the test for Atto itself.
  *
- * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2021, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-clause license.
  */
@@ -437,6 +437,29 @@ static void test_zeros(void)
     SHOULD_FAIL(atto_zeros(c, 5));
 }
 
+static void test_nzeros(void)
+{
+    const uint8_t a[] = {0, 0, 0, 0, 0};
+    const uint8_t b[] = {0, 0, 255, 255, 255};
+    const uint8_t c[] = {11, 22, 33, 0, 0};
+
+    atto_nzeros(b, 3);
+    atto_nzeros(c, 3);
+    atto_nzeros(c, 4);
+    atto_nzeros(c, 5);
+    atto_nzeros(&c[2], 1);
+    atto_nzeros(&c[2], 2);
+    atto_nzeros(&c[2], 3);
+    atto_nzeros("\0\0c\0", 4);
+    atto_nzeros("a\0c\0", 4);
+    SHOULD_FAIL(atto_nzeros(a, 1));
+    SHOULD_FAIL(atto_nzeros(a, 2));
+    SHOULD_FAIL(atto_nzeros(a, 3));
+    SHOULD_FAIL(atto_nzeros(a, 4));
+    SHOULD_FAIL(atto_nzeros(a, 5));
+    SHOULD_FAIL(atto_nzeros(b, 2));
+}
+
 static void test_fail(void)
 {
     SHOULD_FAIL(atto_fail());
@@ -507,6 +530,7 @@ int main(void)
     test_memeq();
     test_memneq();
     test_zeros();
+    test_nzeros();
     test_fail();
     test_at_the_end_some_tests_have_failed();
 
