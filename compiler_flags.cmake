@@ -45,7 +45,8 @@ else ()
     string(APPEND CMAKE_C_FLAGS " -Wconversion")  # Values are implicitly converted
     string(APPEND CMAKE_C_FLAGS " -Wsign-conversion")  # Signed to/from unsigned implicit conversion
     string(APPEND CMAKE_C_FLAGS " -Wdouble-promotion")  # Floats implicitly promoted to doubles
-    string(APPEND CMAKE_C_FLAGS " -Wfloat-equal")  # Floats compared exactly instead of approx.
+    # Disabling float equality: it's used in the tests on purpose
+    #string(APPEND CMAKE_C_FLAGS " -Wfloat-equal")  # Floats compared exactly instead of approx.
     string(APPEND CMAKE_C_FLAGS " -Wswitch-default")  # Switch-case missing default
     string(APPEND CMAKE_C_FLAGS " -Wswitch-enum")  # Switch-case of an enum not covering all values
     string(APPEND CMAKE_C_FLAGS " -Wuninitialized")  # Usage of uninitialised variable

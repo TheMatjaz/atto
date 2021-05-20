@@ -160,11 +160,6 @@ static void test_nan(void)
     atto_nan(nanf(""));
 }
 
-static void test_nan_finite_int(void)
-{
-    SHOULD_FAIL(atto_nan(1));
-}
-
 static void test_nan_finite_float(void)
 {
     SHOULD_FAIL(atto_nan(1.0f));
@@ -185,11 +180,6 @@ static void test_inf(void)
     atto_inf(INFINITY);
     atto_inf(+INFINITY);
     atto_inf(-INFINITY);
-}
-
-static void test_inf_finite_int(void)
-{
-    SHOULD_FAIL(atto_inf(1));
 }
 
 static void test_inf_finite_float(void)
@@ -214,11 +204,6 @@ static void test_plusinf(void)
     SHOULD_FAIL(atto_plusinf(-INFINITY));
 }
 
-static void test_plusinf_finite_int(void)
-{
-    SHOULD_FAIL(atto_plusinf(1));
-}
-
 static void test_plusinf_finite_float(void)
 {
     SHOULD_FAIL(atto_plusinf(1.0f));
@@ -238,11 +223,6 @@ static void test_minusinf(void)
 {
     atto_minusinf(-INFINITY);
     SHOULD_FAIL(atto_minusinf(INFINITY));
-}
-
-static void test_minusinf_finite_int(void)
-{
-    SHOULD_FAIL(atto_minusinf(1));
 }
 
 static void test_minusinf_finite_float(void)
@@ -270,11 +250,6 @@ static void test_notfinite(void)
     atto_notfinite(nan(""));
 }
 
-static void test_notfinite_finite_int(void)
-{
-    SHOULD_FAIL(atto_notfinite(1));
-}
-
 static void test_notfinite_finite_float(void)
 {
     SHOULD_FAIL(atto_notfinite(1.0f));
@@ -292,10 +267,8 @@ static void test_finite(void)
     atto_finite(-0.0f);
     atto_finite(0.0);
     atto_finite(-0.0);
-    atto_finite(1);
     atto_finite(1.0f);
     atto_finite(1.0);
-    atto_finite(-1);
     atto_finite(-1.0f);
     atto_finite(-1.0);
 }
@@ -356,7 +329,7 @@ static void test_noflag(void)
     atto_noflag(0x0F, 0xF0);
     atto_noflag(0xFF, 0);
     atto_noflag(0, 0);
-    atto_noflag(0x07, 1 << 5);
+    atto_noflag(0x07, 1U << 5U);
     atto_noflag(0x07, 0xF8);
     SHOULD_FAIL(atto_noflag(0x07, 0x04));
 }
@@ -494,27 +467,22 @@ int main(void)
     test_ddelta();
     test_ddelta_negatives();
     test_nan();
-    test_nan_finite_int();
     test_nan_finite_float();
     test_nan_finite_double();
     test_nan_infinity();
     test_inf();
-    test_inf_finite_int();
     test_inf_finite_float();
     test_inf_finite_double();
     test_inf_nan();
     test_plusinf();
-    test_plusinf_finite_int();
     test_plusinf_finite_float();
     test_plusinf_finite_double();
     test_plusinf_nan();
     test_minusinf();
-    test_minusinf_finite_int();
     test_minusinf_finite_float();
     test_minusinf_finite_double();
     test_minusinf_nan();
     test_notfinite();
-    test_notfinite_finite_int();
     test_notfinite_finite_float();
     test_notfinite_finite_double();
     test_finite();
