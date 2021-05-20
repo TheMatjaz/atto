@@ -2,15 +2,20 @@
  * @file
  * Example usage of Atto and also the test for Atto itself.
  *
- * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2021, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-clause license.
  */
 
-#include "../src/atto.h"
+#include "atto.h"
 #include <stdint.h>
 
-#define SHOULD_FAIL(failing) printf("Expected failure: "); failing
+static size_t expected_failures_counter = 0;
+
+#define SHOULD_FAIL(failing) \
+    printf("Expected failure: "); \
+    expected_failures_counter++; \
+    failing
 
 static void test_initially_no_test_have_failed(void)
 {
@@ -160,11 +165,6 @@ static void test_nan(void)
     atto_nan(nanf(""));
 }
 
-static void test_nan_finite_int(void)
-{
-    SHOULD_FAIL(atto_nan(1));
-}
-
 static void test_nan_finite_float(void)
 {
     SHOULD_FAIL(atto_nan(1.0f));
@@ -185,11 +185,6 @@ static void test_inf(void)
     atto_inf(INFINITY);
     atto_inf(+INFINITY);
     atto_inf(-INFINITY);
-}
-
-static void test_inf_finite_int(void)
-{
-    SHOULD_FAIL(atto_inf(1));
 }
 
 static void test_inf_finite_float(void)
@@ -214,11 +209,6 @@ static void test_plusinf(void)
     SHOULD_FAIL(atto_plusinf(-INFINITY));
 }
 
-static void test_plusinf_finite_int(void)
-{
-    SHOULD_FAIL(atto_plusinf(1));
-}
-
 static void test_plusinf_finite_float(void)
 {
     SHOULD_FAIL(atto_plusinf(1.0f));
@@ -238,11 +228,6 @@ static void test_minusinf(void)
 {
     atto_minusinf(-INFINITY);
     SHOULD_FAIL(atto_minusinf(INFINITY));
-}
-
-static void test_minusinf_finite_int(void)
-{
-    SHOULD_FAIL(atto_minusinf(1));
 }
 
 static void test_minusinf_finite_float(void)
@@ -270,11 +255,6 @@ static void test_notfinite(void)
     atto_notfinite(nan(""));
 }
 
-static void test_notfinite_finite_int(void)
-{
-    SHOULD_FAIL(atto_notfinite(1));
-}
-
 static void test_notfinite_finite_float(void)
 {
     SHOULD_FAIL(atto_notfinite(1.0f));
@@ -287,15 +267,12 @@ static void test_notfinite_finite_double(void)
 
 static void test_finite(void)
 {
-    atto_finite(0);
     atto_finite(0.0f);
     atto_finite(-0.0f);
     atto_finite(0.0);
     atto_finite(-0.0);
-    atto_finite(1);
     atto_finite(1.0f);
     atto_finite(1.0);
-    atto_finite(-1);
     atto_finite(-1.0f);
     atto_finite(-1.0);
 }
@@ -356,7 +333,7 @@ static void test_noflag(void)
     atto_noflag(0x0F, 0xF0);
     atto_noflag(0xFF, 0);
     atto_noflag(0, 0);
-    atto_noflag(0x07, 1 << 5);
+    atto_noflag(0x07, 1U << 5U);
     atto_noflag(0x07, 0xF8);
     SHOULD_FAIL(atto_noflag(0x07, 0x04));
 }
@@ -383,7 +360,7 @@ static void test_memeq(void)
 {
     const uint8_t a[] = {255, 255, 255, 255, 255};
     const uint8_t b[] = {255, 255, 255, 255, 255};
-    const uint8_t c[] = {11, 22, 33, 44, 55};
+    const uint8_t c[] = {255, 255, 255, 255, 55};
 
     atto_memeq(a, b, 0);
     atto_memeq(a, b, 1);
@@ -395,7 +372,6 @@ static void test_memeq(void)
     atto_memeq("abcd", "abcd", 2);
     atto_memeq("abcd", "abcd", 4);
     SHOULD_FAIL(atto_memeq(c, a, 5));
-    SHOULD_FAIL(atto_memeq("abcd", "ABCD", 4));
 }
 
 static void test_memneq(void)
@@ -413,28 +389,43 @@ static void test_memneq(void)
     atto_memneq("abcd", "ABcd", 4);
     atto_memneq("abcd", "abcD", 4);
     SHOULD_FAIL(atto_memneq(a, b, 5));
-    SHOULD_FAIL(atto_memneq("abcd", "abcd", 4));
-    SHOULD_FAIL(atto_memneq(a, c, 0));
 }
 
 static void test_zeros(void)
 {
     const uint8_t a[] = {0, 0, 0, 0, 0};
     const uint8_t b[] = {0, 0, 255, 255, 255};
-    const uint8_t c[] = {11, 22, 33, 0, 0};
     const uint32_t d[] = {0, 0, 0};
 
-    atto_zeros(a, 0);
-    atto_zeros(a, 1);
-    atto_zeros(a, 2);
-    atto_zeros(a, 3);
-    atto_zeros(a, 4);
-    atto_zeros(a, 5);
-    atto_zeros(b, 2);
-    atto_zeros(d, 3 * sizeof(uint32_t));
-    atto_zeros("\0\0\0", 3);
-    SHOULD_FAIL(atto_zeros(b, 5));
-    SHOULD_FAIL(atto_zeros(c, 5));
+    atto_zeros(a, 0U);
+    atto_zeros(a, 1U);
+    atto_zeros(a, 2U);
+    atto_zeros(a, 3U);
+    atto_zeros(a, 4U);
+    atto_zeros(a, 5U);
+    atto_zeros(b, 2U);
+    atto_zeros(d, 3U * sizeof(uint32_t));
+    atto_zeros("\0\0\0", 3U);
+    SHOULD_FAIL(atto_zeros(b, 5U));
+}
+
+static void test_nzeros(void)
+{
+    const uint8_t a[] = {0, 0, 0, 0, 0};
+    const uint8_t b[] = {0, 0, 255, 255, 255};
+    const uint8_t c[] = {11, 22, 33, 0, 0};
+
+    atto_nzeros(b, 3U);
+    atto_nzeros(c, 3U);
+    atto_nzeros(c, 4U);
+    atto_nzeros(c, 5U);
+    atto_nzeros(&c[2], 1U);
+    atto_nzeros(&c[2], 2U);
+    atto_nzeros(&c[2], 3U);
+    atto_nzeros("\0\0c\0", 4U);
+    atto_nzeros("a\0c\0", 4U);
+    atto_report();  // Dummy report somewhere to check it's working properly
+    SHOULD_FAIL(atto_nzeros(a, 5U));
 }
 
 static void test_fail(void)
@@ -471,27 +462,22 @@ int main(void)
     test_ddelta();
     test_ddelta_negatives();
     test_nan();
-    test_nan_finite_int();
     test_nan_finite_float();
     test_nan_finite_double();
     test_nan_infinity();
     test_inf();
-    test_inf_finite_int();
     test_inf_finite_float();
     test_inf_finite_double();
     test_inf_nan();
     test_plusinf();
-    test_plusinf_finite_int();
     test_plusinf_finite_float();
     test_plusinf_finite_double();
     test_plusinf_nan();
     test_minusinf();
-    test_minusinf_finite_int();
     test_minusinf_finite_float();
     test_minusinf_finite_double();
     test_minusinf_nan();
     test_notfinite();
-    test_notfinite_finite_int();
     test_notfinite_finite_float();
     test_notfinite_finite_double();
     test_finite();
@@ -507,8 +493,14 @@ int main(void)
     test_memeq();
     test_memneq();
     test_zeros();
+    test_nzeros();
     test_fail();
     test_at_the_end_some_tests_have_failed();
+    atto_report();
 
-    return 0;
+    // This self-test should generate a very precise amount of expected
+    // failures. If this is not the case, then something went wrong with the
+    // self-test and a non-zero exit-code should be provided when this
+    // executable ends.
+    return expected_failures_counter != atto_counter_assert_failures;
 }

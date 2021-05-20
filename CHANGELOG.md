@@ -9,6 +9,50 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 *******************************************************************************
+
+[1.4.0] - 2021-05-21
+----------------------------------------
+
+Counters of assertion passes and failures, simple status report printing,
+check for non-all-zero arrays, fixes to avoid compilation warnings.
+
+
+### Added
+
+- Counters `atto_counter_assert_passes` and `atto_counter_assert_failures`
+  counting the amount of assertions `atto_assert()` or other aliases for it
+  that failed or passed, to be able to see the progress through the test
+  suite.
+- `atto_report()` to provide a simple one-line indication of what is the
+  status of the 2 counters above at any point in the test suite,
+  including at the very end.
+- `atto_nzeros()` which is the opposite of `atto_zeros()`, checking that
+  there is at least one non-zero value in the array of bytes.
+  Useful to check whether a memory location has been initialised to non-zero
+  values, especially for random strings or data from an outside
+  source we don't know the exact format of.
+- GitHub workflow scripts to build and self-test on different operating
+  systems. Fancy badges in the readme included.
+
+
+### Fixed
+
+- CMake configuration now uses a more portable set of compiler flags,
+  taken from LibAscon.
+- Some macro arguments did not have round brackets around them.
+- Self-test changed to avoid compilation warnings due to improper use of types
+  (integers for float/double functions and signed/unsigned warnings).
+- Cast the length values passed to `atto_zeros()` to `size_t` to avoid
+  warnings about signed/unsigned integer comparison.
+- Remove `.idea` folder from Git repo from now on.
+- Fixed some typos/missing words in the BSD 3-Clause license text file.
+- Renamed Doxygen build target to avoid name clashes.
+- Fix typo in Doxygen config, now it should properly exclude the test
+  and source file.
+- Fixed self-test skipping some of the checks.
+
+
+
 [1.3.1] - 2020-12-27
 ----------------------------------------
 

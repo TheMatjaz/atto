@@ -2,7 +2,7 @@
  * @file
  * Atto - the microscopic C unit test framework
  *
- * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2021, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-Clause License
  *
@@ -41,7 +41,7 @@ extern "C"
 /**
  * Semantic version of this file and framework.
  */
-#define ATTO_VERSION "1.3.1"
+#define ATTO_VERSION "1.4.0"
 
 #include <stdio.h>  /* For printf() */
 #include <math.h>   /* For fabs(), fabsf(), isnan(), isinf(), isfinite() */
@@ -56,6 +56,25 @@ extern "C"
  * failed.
  */
 extern char atto_at_least_one_fail;
+
+/**
+ * Counter of all Atto assertion macro calls that failed the check.
+ *
+ * The user should not change this value, but may freely read it.
+ * Useful to inspect the amount of errors (which should be 0) for changes
+ * during different launches of the test suite.
+ */
+
+extern size_t atto_counter_assert_failures;
+
+/**
+ * Counter of all Atto assertion macro calls that passed the check.
+ *
+ * The user should not change this value, but may freely read it.
+ * Useful to inspect the amount of passes for changes
+ * during different launches of the test suite.
+ */
+extern size_t atto_counter_assert_passes;
 
 /**
  * Absolute tolerance when comparing two single-precision floating point
@@ -74,6 +93,23 @@ extern char atto_at_least_one_fail;
  * tolerance, the assertion fails.
  */
 #define ATTO_DOUBLE_EQ_ABSTOL (1e-8)
+
+
+/**
+ * Prints a brief report message providing the point where this report is
+ * and the amount of successes and failures at this point.
+ *
+ * Particularly useful to call it at the end of the test runner executable
+ * or after a certain group of test cases to verify that progress through the
+ * test suite is happening. In case of sudden crashes of the test suite,
+ * multiple of these reports may be added to aid debugging in understanding
+ * where the issue arisees.
+ */
+#define atto_report() \
+    printf("REPORT | File: %s:%d | Test case: %s" \
+           " | Passes: %5zu | Failures: %5zu\n", \
+           __FILE__, __LINE__, __func__,          \
+           atto_counter_assert_passes, atto_counter_assert_failures)
 
 /**
  * Verifies if the given boolean expression is true.
@@ -97,19 +133,22 @@ extern char atto_at_least_one_fail;
  * atto_assert(3 < 1);  // Fails
  * ```
  */
-#define atto_assert(expression) do { \
-    if (!(expression)) { \
+#define atto_assert(expression) do {                   \
+    if (!(expression)) {                               \
         printf("FAIL | File: %s:%d | Test case: %s\n", \
-               __FILE__, __LINE__, __func__); \
-        atto_at_least_one_fail = 1U; \
-        return; \
-    } \
+               __FILE__, __LINE__, __func__);          \
+        atto_counter_assert_failures++;                \
+        atto_at_least_one_fail = 1;                    \
+        return;                                        \
+    } else {                                           \
+        atto_counter_assert_passes++;                  \
+    }                                                  \
 } while (0)
 
 /**
  * Verifies if the given boolean expression is true.
  *
- * Just a rename of atto_assert() for consistensy with atto_false().
+ * Just a rename of atto_assert() for consistency with atto_false().
  */
 #define atto_true(x) atto_assert(x)
 
@@ -331,7 +370,7 @@ extern char atto_at_least_one_fail;
  * atto_plusinf(1);          // Fails
  * ```
  */
-#define atto_plusinf(value) atto_assert((isinf(value)) && (value > 0))
+#define atto_plusinf(value) atto_assert((isinf(value)) && ((value) > 0))
 
 /**
  * Verifies that the floating point value is negative infinity.
@@ -347,7 +386,7 @@ extern char atto_at_least_one_fail;
  * atto_minusinf(1);          // Fails
  * ```
  */
-#define atto_minusinf(value) atto_assert((isinf(value)) && (value < 0))
+#define atto_minusinf(value) atto_assert((isinf(value)) && ((value) < 0))
 
 /**
  * Verifies that the floating point value is finite, thus not NaN or
@@ -462,6 +501,8 @@ extern char atto_at_least_one_fail;
 /**
  * Verifies if a memory section is filled with just zeros.
  *
+ * Useful to check whether a memory location has been cleared.
+ *
  * Otherwise stops the test case and reports on standard output.
  *
  * Example:
@@ -474,8 +515,38 @@ extern char atto_at_least_one_fail;
  * ```
 */
 #define atto_zeros(x, len) do { \
-        for (size_t atto_idx = 0; atto_idx < (len); atto_idx++) \
-        { atto_eq(((uint8_t*)(x))[atto_idx], 0); } \
+        for (size_t __atto_idx = 0; __atto_idx < (size_t)(len); __atto_idx++) \
+        { atto_eq(((uint8_t*)(x))[__atto_idx], 0); } \
+    } while(0)
+
+/**
+ * Verifies if a memory section is not completely filled with zeros
+ * (there is at least one non-zero byte).
+ *
+ * Useful to check whether a memory location has been initialised to non-zero
+ * values, especially for random strings or data from an outside
+ * source we don't know the exact format of.
+ *
+ * Otherwise stops the test case and reports on standard output.
+ *
+ * Example:
+ * ```
+ * atto_nzeros("abcd", 2);        // Passes
+ * atto_nzeros("\0\0cd", 2);      // Fails
+ * atto_nzeros("\0\0cd", 4);      // Passes
+ * atto_nzeros("\0\0\0\0", 4);    // Fails
+ * atto_nzeros("\0\0c\0", 4);     // Passes
+ * atto_nzeros("a\0c\0", 3);      // Passes
+ * atto_nzeros("\0\0\0\0", 100);  // UNDEFINED as exceeding known memory
+ * ```
+*/
+#define atto_nzeros(x, len) do { \
+        uint8_t __atto_all_zero = 1; \
+        for (size_t __atto_idx = 0; __atto_idx < (size_t)(len); __atto_idx++) \
+        { if(((uint8_t*)(x))[__atto_idx] != 0) \
+            { __atto_all_zero = 0; break; } \
+        } \
+        atto_false(__atto_all_zero); \
     } while(0)
 
 /**

@@ -3,7 +3,7 @@
  * @internal
  * Atto - the microscopic C unit test framework
  *
- * @copyright Copyright © 2019-2020, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2021, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-Clause License
  *
@@ -31,4 +31,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "stddef.h"
+
 char atto_at_least_one_fail = 0;
+size_t atto_counter_assert_failures = 0;
+size_t atto_counter_assert_passes = 0;

@@ -1,13 +1,19 @@
 Atto - the microscopic C unit test framework
 ===============================================================================
 
+[![Build Status Master](https://github.com/TheMatjaz/atto/actions/workflows/build_master.yml/badge.svg)](https://github.com/TheMatjaz/atto/actions/workflows/build_master.yml)
+[![Build Status Develop](https://github.com/TheMatjaz/atto/actions/workflows/build_develop.yml/badge.svg)](https://github.com/TheMatjaz/atto/actions/workflows/build_develop.yml)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/TheMatjaz/atto)](https://github.com/TheMatjaz/atto/releases/latest)
+[![GitHub](https://img.shields.io/github/license/TheMatjaz/atto)](https://github.com/TheMatjaz/atto/blob/master/LICENSE.md)
+
 Atto is the simplest-to-use C unit test framework, in just one header file,
 without `malloc()`, without `fork()`, without dependencies, ready for
-embedded systems that can at least call `printf()`. And even those who cannot,
+embedded systems that can at least call `printf()` - and even those who cannot,
 can easily adapt it!
 
 Most probably you will understand most about Atto if you just read its
-header: [`atto.h`](src/atto.h). I mean, **it's just 30 macros**.
+header: [`atto.h`](src/atto.h). I promise it's not that long, if you exclude
+the documentation.
 
 
 
@@ -20,7 +26,7 @@ true (e.g. a value is in the allowed range).
 
 There are so many complex unit test frameworks to do this in C and C++
 which just increases complexity of the whole project. Suppose you are just
-writing a simple program and want to test it. Oh boy! Start managing the
+writing a simple program and want to test it. Oh, boy! Start managing the
 dependencies for the framework, check if you can install it, maybe you need
 Docker etc. Some frameworks even require `fork()` - how could that work on
 an embedded system?
@@ -36,6 +42,9 @@ filename and line number. Open that file, go to that line. There is the error.
 Start using the debugger around that point.
 
 Passing tests are not printed, to avoid cluttering the output.
+You can still explicitly request a status report at any point in the 
+test suite codebase (e.g. after a cluster of testcases of similar nature)
+with `atto_report()`.
 
 
 
@@ -67,7 +76,7 @@ Here is an example where we test the `sqrt()` function from `math.h`:
 #include <math.h>
 #include "atto.h"
 
-void test_sqrt_valid_values(void)
+static void test_sqrt_valid_values(void)
 {
     atto_eq(0.0, sqrt(0.0));
     atto_eq(1.0, sqrt(1.0));
@@ -79,7 +88,7 @@ void test_sqrt_valid_values(void)
     atto_ddelta(2.2361, sqrt(5.0), 1e-8); // This is NOT executed!
 }
 
-void test_sqrt_negative_values(void)
+static void test_sqrt_negative_values(void)
 {
     atto_nan(sqrt(-1.0));
 }
@@ -88,22 +97,33 @@ int main(void)
 {
     test_sqrt_valid_values();
     test_sqrt_negative_values();
-    return atto_at_least_one_fail;
+    atto_report();  // Print a small one-line status report
+    // Looks approximately like this
+    // REPORT | File: /path/to/my/file.c:27 | Test case: main | Passes: 5 | Failures: 1
+    return atto_at_least_one_fail; // Non-zero in case of error to provide a proper exit-code
 }
 ```
 
+### Real-world examples
 
-### Complete recipe
+Check some of my other personal projects, where I use Atto for unit testing!
+
+- [LibAscon](https://github.com/TheMatjaz/LibAscon)
+- [LibISAAC](https://github.com/TheMatjaz/LibISAAC)
+
+
+### Complete recipe for the creation of a test suite with Atto
 
 1. Add the files `atto.h`, `atto.c` to your project:
-   - you can either copy the whole `src` folder into your project
-   - or use `git subtree` to include this repo into your own
+   - You can copy the whole `src` folder into your project.
+     This is probably the fastest and simplest solution.
+   - Alternatively, use `git subtree` to include this repo into your own
 2. Create a file with your tests, say `test.c`.
 3. Add test case functions returning `void` to `test.c`, as the two
   `test_sqrt_*` functions in the example above.
 4. In each test case call `atto_assert()`, `atto_eq()`, `atto_flag()` etc.
    to verify the values you are testing. On a fail, the test case is terminated
-   early and the following code is not executed.
+   early and the lines of code after that are not executed.
 5. Add a `main()` function to `test.c` which returns `atto_at_least_one_fail`.
    By doing so, the exit code of the test executable will be `1` in case at 
    least one test failed. Particularly useful when running the test executables
@@ -113,6 +133,10 @@ int main(void)
 6. Call the test case functions from the `main()`.
 7. Compile `test.c` into an executable and run it.
 8. Check its standard output and the process exit code for failed tests.
+9. Bonus: add some calls to `atto_report()` wherever you want in the test suite
+   code. At least one call at the very end (before the `main` returns)
+   is suggested, but also after a set of similar test cases is a good choice
+   to see where something is making the test suite crash, in case so happens.
 
 
 ### A test case is failing. Now what?
@@ -126,16 +150,19 @@ FAIL | File: /path/to/some_project/test.c:182 | Test case: test_valid_input_leng
 1. Open the file `/path/to/some_project/test.c`
 2. Go to line 182 (use some keyboard shortcut), which is in the function
    `test_valid_input_length()`
+   
+   Note: sometimes the `path:linenumber` pattern is identified as
+   clickable by your IDE. Maybe that speeds up your search.
 3. The assertion on that specific line failed. Now up to you to debug why.
    The easiest way is to place a debugger breakpoint earlier in the test case.
    
-Once the standard output does not contains any `FAIL` lines and the exit code
+Once the standard output does not contain any `FAIL` lines and the exit code
 of the process is `0`, you are good to go!
 
 
-### This framework does not fit my needs!
+### But this framework does not fit my needs!
 
 It may not be the best solution for your scenario - it was born for my
-personal projects and I needed something simple. You are more than welcome
+personal projects where I needed something simple. You are more than welcome
 to customize it to your needs within your project or simply
 to use other frameworks.
