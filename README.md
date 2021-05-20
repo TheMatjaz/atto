@@ -1,6 +1,11 @@
 Atto - the microscopic C unit test framework
 ===============================================================================
 
+[![Build Status Master](https://github.com/TheMatjaz/atto/actions/workflows/build_master.yml/badge.svg)](https://github.com/TheMatjaz/atto/actions/workflows/build_master.yml)
+[![Build Status Develop](https://github.com/TheMatjaz/atto/actions/workflows/build_develop.yml/badge.svg)](https://github.com/TheMatjaz/atto/actions/workflows/build_develop.yml)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/TheMatjaz/atto)](https://github.com/TheMatjaz/atto/releases/latest)
+[![GitHub](https://img.shields.io/github/license/TheMatjaz/atto)](https://github.com/TheMatjaz/atto/blob/master/LICENSE.md)
+
 Atto is the simplest-to-use C unit test framework, in just one header file,
 without `malloc()`, without `fork()`, without dependencies, ready for
 embedded systems that can at least call `printf()`. And even those who cannot,
