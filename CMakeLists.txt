@@ -26,6 +26,7 @@ add_executable(atto_selftest
                src/atto.c
                tst/selftest.c)
 target_include_directories(atto_selftest PRIVATE src/)
+target_link_libraries(atto_selftest PRIVATE m)
 
 enable_testing()
 add_test(NAME atto_selftest COMMAND atto_selftest)

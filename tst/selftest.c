@@ -395,7 +395,6 @@ static void test_zeros(void)
 {
     const uint8_t a[] = {0, 0, 0, 0, 0};
     const uint8_t b[] = {0, 0, 255, 255, 255};
-    const uint8_t c[] = {11, 22, 33, 0, 0};
     const uint32_t d[] = {0, 0, 0};
 
     atto_zeros(a, 0U);
