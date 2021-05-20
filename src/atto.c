@@ -31,4 +31,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "stddef.h"
+
 char atto_at_least_one_fail = 0;
+size_t atto_counter_assert_failures = 0;
+size_t atto_counter_assert_passes = 0;

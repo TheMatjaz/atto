@@ -10,7 +10,12 @@
 #include "atto.h"
 #include <stdint.h>
 
-#define SHOULD_FAIL(failing) printf("Expected failure: "); failing
+static size_t expected_failures_counter = 0;
+
+#define SHOULD_FAIL(failing) \
+    printf("Expected failure: "); \
+    expected_failures_counter++; \
+    failing
 
 static void test_initially_no_test_have_failed(void)
 {
@@ -355,7 +360,7 @@ static void test_memeq(void)
 {
     const uint8_t a[] = {255, 255, 255, 255, 255};
     const uint8_t b[] = {255, 255, 255, 255, 255};
-    const uint8_t c[] = {11, 22, 33, 44, 55};
+    const uint8_t c[] = {255, 255, 255, 255, 55};
 
     atto_memeq(a, b, 0);
     atto_memeq(a, b, 1);
@@ -367,7 +372,6 @@ static void test_memeq(void)
     atto_memeq("abcd", "abcd", 2);
     atto_memeq("abcd", "abcd", 4);
     SHOULD_FAIL(atto_memeq(c, a, 5));
-    SHOULD_FAIL(atto_memeq("abcd", "ABCD", 4));
 }
 
 static void test_memneq(void)
@@ -385,8 +389,6 @@ static void test_memneq(void)
     atto_memneq("abcd", "ABcd", 4);
     atto_memneq("abcd", "abcD", 4);
     SHOULD_FAIL(atto_memneq(a, b, 5));
-    SHOULD_FAIL(atto_memneq("abcd", "abcd", 4));
-    SHOULD_FAIL(atto_memneq(a, c, 0));
 }
 
 static void test_zeros(void)
@@ -406,7 +408,6 @@ static void test_zeros(void)
     atto_zeros(d, 3U * sizeof(uint32_t));
     atto_zeros("\0\0\0", 3U);
     SHOULD_FAIL(atto_zeros(b, 5U));
-    SHOULD_FAIL(atto_zeros(c, 5U));
 }
 
 static void test_nzeros(void)
@@ -424,12 +425,8 @@ static void test_nzeros(void)
     atto_nzeros(&c[2], 3U);
     atto_nzeros("\0\0c\0", 4U);
     atto_nzeros("a\0c\0", 4U);
-    SHOULD_FAIL(atto_nzeros(a, 1U));
-    SHOULD_FAIL(atto_nzeros(a, 2U));
-    SHOULD_FAIL(atto_nzeros(a, 3U));
-    SHOULD_FAIL(atto_nzeros(a, 4U));
+    atto_report();  // Dummy report somewhere to check it's working properly
     SHOULD_FAIL(atto_nzeros(a, 5U));
-    SHOULD_FAIL(atto_nzeros(b, 2U));
 }
 
 static void test_fail(void)
@@ -500,6 +497,11 @@ int main(void)
     test_nzeros();
     test_fail();
     test_at_the_end_some_tests_have_failed();
+    atto_report();
 
-    return 0;
+    // This self-test should generate a very precise amount of expected
+    // failures. If this is not the case, then something went wrong with the
+    // self-test and a non-zero exit-code should be provided when this
+    // executable ends.
+    return expected_failures_counter != atto_counter_assert_failures;
 }

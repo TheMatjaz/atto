@@ -13,11 +13,19 @@ and this project adheres to
 [1.4.0] - 2021-05-21
 ----------------------------------------
 
-Check for non-all-zero arrays, fixes to avoid compilation warnings,
-CMake improvements 
+Counters of assertion passes and failures, simple status report printing,
+check for non-all-zero arrays, fixes to avoid compilation warnings.
+
 
 ### Added
 
+- Counters `atto_counter_assert_passes` and `atto_counter_assert_failures`
+  counting the amount of assertions `atto_assert()` or other aliases for it
+  that failed or passed, to be able to see the progress through the test
+  suite.
+- `atto_report()` to provide a simple one-line indication of what is the
+  status of the 2 counters above at any point in the test suite,
+  including at the very end.
 - `atto_nzeros()` which is the opposite of `atto_zeros()`, checking that
   there is at least one non-zero value in the array of bytes.
   Useful to check whether a memory location has been initialised to non-zero
@@ -41,6 +49,7 @@ CMake improvements
 - Renamed Doxygen build target to avoid name clashes.
 - Fix typo in Doxygen config, now it should properly exclude the test
   and source file.
+- Fixed self-test skipping some of the checks.
 
 
 

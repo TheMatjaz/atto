@@ -58,6 +58,25 @@ extern "C"
 extern char atto_at_least_one_fail;
 
 /**
+ * Counter of all Atto assertion macro calls that failed the check.
+ *
+ * The user should not change this value, but may freely read it.
+ * Useful to inspect the amount of errors (which should be 0) for changes
+ * during different launches of the test suite.
+ */
+
+extern size_t atto_counter_assert_failures;
+
+/**
+ * Counter of all Atto assertion macro calls that passed the check.
+ *
+ * The user should not change this value, but may freely read it.
+ * Useful to inspect the amount of passes for changes
+ * during different launches of the test suite.
+ */
+extern size_t atto_counter_assert_passes;
+
+/**
  * Absolute tolerance when comparing two single-precision floating point
  * value for approximate-equality using atto_fapprox().
  *
@@ -74,6 +93,23 @@ extern char atto_at_least_one_fail;
  * tolerance, the assertion fails.
  */
 #define ATTO_DOUBLE_EQ_ABSTOL (1e-8)
+
+
+/**
+ * Prints a brief report message providing the point where this report is
+ * and the amount of successes and failures at this point.
+ *
+ * Particularly useful to call it at the end of the test runner executable
+ * or after a certain group of test cases to verify that progress through the
+ * test suite is happening. In case of sudden crashes of the test suite,
+ * multiple of these reports may be added to aid debugging in understanding
+ * where the issue arisees.
+ */
+#define atto_report() \
+    printf("REPORT | File: %s:%d | Test case: %s" \
+           " | Passes: %5zu | Failures: %5zu\n", \
+           __FILE__, __LINE__, __func__,          \
+           atto_counter_assert_passes, atto_counter_assert_failures)
 
 /**
  * Verifies if the given boolean expression is true.
@@ -97,13 +133,16 @@ extern char atto_at_least_one_fail;
  * atto_assert(3 < 1);  // Fails
  * ```
  */
-#define atto_assert(expression) do { \
-    if (!(expression)) { \
+#define atto_assert(expression) do {                   \
+    if (!(expression)) {                               \
         printf("FAIL | File: %s:%d | Test case: %s\n", \
-               __FILE__, __LINE__, __func__); \
-        atto_at_least_one_fail = 1U; \
-        return; \
-    } \
+               __FILE__, __LINE__, __func__);          \
+        atto_counter_assert_failures++;                \
+        atto_at_least_one_fail = 1;                    \
+        return;                                        \
+    } else {                                           \
+        atto_counter_assert_passes++;                  \
+    }                                                  \
 } while (0)
 
 /**
