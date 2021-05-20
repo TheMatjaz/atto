@@ -9,6 +9,36 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 *******************************************************************************
+
+[1.4.0] - 2021-05-21
+----------------------------------------
+
+Check for non-all-zero arrays, CMake improvements.
+
+### Added
+
+- `atto_nzeros()` which is the opposite of `atto_zeros()`, checking that
+  there is at least one non-zero value in the array of bytes.
+  Useful to check whether a memory location has been initialised to non-zero
+  values, especially for random strings or data from an outside
+  source we don't know the exact format of.
+- GitHub workflow scripts to build and self-test on different operating
+  systems. Fancy badges in the readme included.
+
+
+### Fixed
+
+- CMake configuration now uses a more portable set of compiler flags,
+  taken from LibAscon.
+- Fixed some typos/missing words in the BSD 3-Clause license text file.
+- Remove `.idea` folder from Git repo from now on.
+- Renamed Doxygen build target to aovid name clashes.
+- Some macro arguments did not have round brackets around them.
+- Fix typo in Doxygen config, now it should properly exclude the test
+  and source file.
+
+
+
 [1.3.1] - 2020-12-27
 ----------------------------------------
 
