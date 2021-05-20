@@ -397,17 +397,17 @@ static void test_zeros(void)
     const uint8_t c[] = {11, 22, 33, 0, 0};
     const uint32_t d[] = {0, 0, 0};
 
-    atto_zeros(a, 0);
-    atto_zeros(a, 1);
-    atto_zeros(a, 2);
-    atto_zeros(a, 3);
-    atto_zeros(a, 4);
-    atto_zeros(a, 5);
-    atto_zeros(b, 2);
-    atto_zeros(d, 3 * sizeof(uint32_t));
-    atto_zeros("\0\0\0", 3);
-    SHOULD_FAIL(atto_zeros(b, 5));
-    SHOULD_FAIL(atto_zeros(c, 5));
+    atto_zeros(a, 0U);
+    atto_zeros(a, 1U);
+    atto_zeros(a, 2U);
+    atto_zeros(a, 3U);
+    atto_zeros(a, 4U);
+    atto_zeros(a, 5U);
+    atto_zeros(b, 2U);
+    atto_zeros(d, 3U * sizeof(uint32_t));
+    atto_zeros("\0\0\0", 3U);
+    SHOULD_FAIL(atto_zeros(b, 5U));
+    SHOULD_FAIL(atto_zeros(c, 5U));
 }
 
 static void test_nzeros(void)
@@ -416,21 +416,21 @@ static void test_nzeros(void)
     const uint8_t b[] = {0, 0, 255, 255, 255};
     const uint8_t c[] = {11, 22, 33, 0, 0};
 
-    atto_nzeros(b, 3);
-    atto_nzeros(c, 3);
-    atto_nzeros(c, 4);
-    atto_nzeros(c, 5);
-    atto_nzeros(&c[2], 1);
-    atto_nzeros(&c[2], 2);
-    atto_nzeros(&c[2], 3);
-    atto_nzeros("\0\0c\0", 4);
-    atto_nzeros("a\0c\0", 4);
-    SHOULD_FAIL(atto_nzeros(a, 1));
-    SHOULD_FAIL(atto_nzeros(a, 2));
-    SHOULD_FAIL(atto_nzeros(a, 3));
-    SHOULD_FAIL(atto_nzeros(a, 4));
-    SHOULD_FAIL(atto_nzeros(a, 5));
-    SHOULD_FAIL(atto_nzeros(b, 2));
+    atto_nzeros(b, 3U);
+    atto_nzeros(c, 3U);
+    atto_nzeros(c, 4U);
+    atto_nzeros(c, 5U);
+    atto_nzeros(&c[2], 1U);
+    atto_nzeros(&c[2], 2U);
+    atto_nzeros(&c[2], 3U);
+    atto_nzeros("\0\0c\0", 4U);
+    atto_nzeros("a\0c\0", 4U);
+    SHOULD_FAIL(atto_nzeros(a, 1U));
+    SHOULD_FAIL(atto_nzeros(a, 2U));
+    SHOULD_FAIL(atto_nzeros(a, 3U));
+    SHOULD_FAIL(atto_nzeros(a, 4U));
+    SHOULD_FAIL(atto_nzeros(a, 5U));
+    SHOULD_FAIL(atto_nzeros(b, 2U));
 }
 
 static void test_fail(void)

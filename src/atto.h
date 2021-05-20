@@ -476,8 +476,8 @@ extern char atto_at_least_one_fail;
  * ```
 */
 #define atto_zeros(x, len) do { \
-        for (size_t atto_idx = 0; atto_idx < (len); atto_idx++) \
-        { atto_eq(((uint8_t*)(x))[atto_idx], 0); } \
+        for (size_t __atto_idx = 0; __atto_idx < (size_t)(len); __atto_idx++) \
+        { atto_eq(((uint8_t*)(x))[__atto_idx], 0); } \
     } while(0)
 
 /**
@@ -503,7 +503,7 @@ extern char atto_at_least_one_fail;
 */
 #define atto_nzeros(x, len) do { \
         uint8_t __atto_all_zero = 1; \
-        for (size_t __atto_idx = 0; __atto_idx < (len); __atto_idx++) \
+        for (size_t __atto_idx = 0; __atto_idx < (size_t)(len); __atto_idx++) \
         { if(((uint8_t*)(x))[__atto_idx] != 0) \
             { __atto_all_zero = 0; break; } \
         } \

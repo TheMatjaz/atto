@@ -13,7 +13,8 @@ and this project adheres to
 [1.4.0] - 2021-05-21
 ----------------------------------------
 
-Check for non-all-zero arrays, CMake improvements.
+Check for non-all-zero arrays, fixes to avoid compilation warnings,
+CMake improvements 
 
 ### Added
 
@@ -30,10 +31,14 @@ Check for non-all-zero arrays, CMake improvements.
 
 - CMake configuration now uses a more portable set of compiler flags,
   taken from LibAscon.
-- Fixed some typos/missing words in the BSD 3-Clause license text file.
-- Remove `.idea` folder from Git repo from now on.
-- Renamed Doxygen build target to aovid name clashes.
 - Some macro arguments did not have round brackets around them.
+- Self-test changed to avoid compilation warnings due to improper use of types
+  (integers for float/double functions and signed/unsigned warnings).
+- Cast the length values passed to `atto_zeros()` to `size_t` to avoid
+  warnings about signed/unsigned integer comparison.
+- Remove `.idea` folder from Git repo from now on.
+- Fixed some typos/missing words in the BSD 3-Clause license text file.
+- Renamed Doxygen build target to avoid name clashes.
 - Fix typo in Doxygen config, now it should properly exclude the test
   and source file.
 
