@@ -21,7 +21,7 @@
       "generator": "Unix Makefiles",
       "cacheVariables": {
         "CMAKE_C_COMPILER": "gcc",
-        "CMAKE_C_FLAGS_INIT": "-Wall -Wextra -pedantic -Wconversion -Wsign-conversion -Wdouble-promotion -Wswitch-default -Wswitch-enum -Wuninitialized -Wunused-variable -Wpacked -Wshadow -Waggregate-return -Wformat-security -Wlogical-not-parentheses -Wmissing-declarations -Wnull-dereference -Wduplicated-cond -Wno-padded -Wno-type-limits -Wno-float-equal -Wno-unused-command-line-argument",
+        "CMAKE_C_FLAGS_INIT": "-Wall -Wextra -pedantic -Wconversion -Wsign-conversion -Wdouble-promotion -Wswitch-default -Wswitch-enum -Wuninitialized -Wunused-variable -Wpacked -Wshadow -Waggregate-return -Wformat-security -Wlogical-not-parentheses -Wmissing-declarations -Wnull-dereference -Wduplicated-cond -Wno-padded -Wno-type-limits -Wno-float-equal -Wno-unused-command-line-argument -Wno-unknown-warning-option",
         "CMAKE_C_FLAGS_DEBUG": "-O0 -g3 -DDEBUG=1",
         "CMAKE_C_FLAGS_RELEASE": "-O3 -Werror",
         "CMAKE_C_FLAGS_MINSIZEREL": "-Os -Werror"
