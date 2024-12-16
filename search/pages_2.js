@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['changelog_75',['Changelog',['../md__c_h_a_n_g_e_l_o_g.html',1,'']]]
+  ['bsd_203_20clause_20license_0',['BSD 3-Clause License',['../md_LICENSE.html',1,'']]]
 ];
