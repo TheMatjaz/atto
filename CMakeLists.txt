@@ -7,28 +7,22 @@
 
 cmake_minimum_required(VERSION 3.9)  # For FindDoxygen
 project(Atto
-        VERSION 1.4.0
+        VERSION 1.4.1
         LANGUAGES C
         DESCRIPTION
         "The microscopic C test framework")
-
-
-# -----------------------------------------------------------------------------
-# Compiler flags
-# -----------------------------------------------------------------------------
-include(compiler_flags.cmake)
 
 # -----------------------------------------------------------------------------
 # Build targets
 # -----------------------------------------------------------------------------
 add_executable(atto_selftest
-               src/atto.h
-               src/atto.c
-               tst/selftest.c)
+        src/atto.h
+        src/atto.c
+        tst/selftest.c)
 target_include_directories(atto_selftest PRIVATE src/)
 if (NOT MSVC)
-target_link_libraries(atto_selftest PRIVATE m)
-endif()
+    target_link_libraries(atto_selftest PRIVATE m)
+endif ()
 
 enable_testing()
 add_test(NAME atto_selftest COMMAND atto_selftest)
@@ -69,13 +63,13 @@ if (DOXYGEN_FOUND)
 
     # Graphviz's dot
     set(DOXYGEN_DOT_NUM_THREADS 0)  # Auto set based on CPU
-    set(DOXYGEN_DOT_PATH )  # Empty path = search in $PATH
+    set(DOXYGEN_DOT_PATH)  # Empty path = search in $PATH
 
     # Generate command
     doxygen_add_docs(atto_doxygen
-                     src/atto.h LICENSE.md CHANGELOG.md README.md
-                     # List of input files for Doxygen
-                     )
+            src/atto.h LICENSE.md CHANGELOG.md README.md
+            # List of input files for Doxygen
+    )
 else (DOXYGEN_FOUND)
     message(WARNING "Doxygen not found. Cannot generate documentation.")
 endif (DOXYGEN_FOUND)

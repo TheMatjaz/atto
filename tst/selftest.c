@@ -12,98 +12,114 @@
 
 static size_t expected_failures_counter = 0;
 
-#define SHOULD_FAIL(failing) \
+#define SHOULD_FAIL(failing)      \
     printf("Expected failure: "); \
-    expected_failures_counter++; \
+    expected_failures_counter++;  \
     failing
 
-static void test_initially_no_test_have_failed(void)
+static void
+test_initially_no_test_have_failed(void)
 {
     atto_eq(atto_at_least_one_fail, 0);
 }
 
-static void test_assert(void)
+static void
+test_assert(void)
 {
     atto_assert(1);
     SHOULD_FAIL(atto_assert(0));
 }
 
-static void test_true(void)
+static void
+test_true(void)
 {
     atto_true(1);
     SHOULD_FAIL(atto_true(0));
 }
 
-static void test_false(void)
+static void
+test_false(void)
 {
     atto_false(3000 < 0);
     atto_false(0);
     SHOULD_FAIL(atto_false(1));
 }
 
-static void test_eq(void)
+static void
+test_eq(void)
 {
     atto_eq(12, 12);
     atto_eq(12.0f, 12U);
     SHOULD_FAIL(atto_eq(100, 1));
 }
 
-static void test_neq(void)
+static void
+test_neq(void)
 {
     atto_neq(100, 1);
     SHOULD_FAIL(atto_neq(12, 12));
 }
 
-static void test_neq_casting(void)
+static void
+test_neq_casting(void)
 {
     SHOULD_FAIL(atto_neq(12.0f, 12U));
 }
 
-static void test_gt(void)
+static void
+test_gt(void)
 {
     atto_gt(100, 1);
     SHOULD_FAIL(atto_gt(1, 100));
 }
 
-static void test_gt_equality(void)
+static void
+test_gt_equality(void)
 {
     SHOULD_FAIL(atto_gt(100, 100));
 }
 
-static void test_ge(void)
+static void
+test_ge(void)
 {
     atto_ge(100, 1);
     SHOULD_FAIL(atto_ge(1, 100));
 }
 
-static void test_ge_equality(void)
+static void
+test_ge_equality(void)
 {
     atto_ge(100, 100);
 }
 
-static void test_lt(void)
+static void
+test_lt(void)
 {
     atto_lt(1, 100);
     SHOULD_FAIL(atto_lt(100, 1));
 }
 
-static void test_lt_equality(void)
+static void
+test_lt_equality(void)
 {
     SHOULD_FAIL(atto_lt(100, 100));
 }
 
-static void test_le(void)
+static void
+test_le(void)
 {
     atto_le(1, 100);
     SHOULD_FAIL(atto_le(100, 1));
 }
 
-static void test_le_equality(void)
+static void
+test_le_equality(void)
 {
     atto_le(100, 100);
 }
 
-static void test_fapprox(void)
+static void
+test_fapprox(void)
 {
     atto_fapprox(1.0f, 1.0f);
     atto_fapprox(1.0f, 1U);
@@ -111,7 +127,8 @@ static void test_fapprox(void)
     SHOULD_FAIL(atto_fapprox(1.0f, 1.1f));
 }
 
-static void test_fdelta(void)
+static void
+test_fdelta(void)
 {
     atto_fdelta(1.0f, 1.0f, 0.01f);
     atto_fdelta(1.0f, 1.1f, 0.15f);
@@ -120,7 +137,8 @@ static void test_fdelta(void)
     SHOULD_FAIL(atto_fdelta(1.0f, 1.1f, 0.01f));
 }
 
-static void test_fdelta_negatives(void)
+static void
+test_fdelta_negatives(void)
 {
     atto_fdelta(-1.0f, -1.0f, 0.01f);
     atto_fdelta(-1.0f, -1.0f, -0.01f);
@@ -131,7 +149,8 @@ static void test_fdelta_negatives(void)
     SHOULD_FAIL(atto_fdelta(-1.0f, -1.1f, 0.01f));
 }
 
-static void test_dapprox(void)
+static void
+test_dapprox(void)
 {
     atto_dapprox(1.0, 1.0);
     atto_dapprox(1.0, 1U);
@@ -139,7 +158,8 @@ static void test_dapprox(void)
     SHOULD_FAIL(atto_dapprox(1.0, 1.1));
 }
 
-static void test_ddelta(void)
+static void
+test_ddelta(void)
 {
     atto_ddelta(1.0, 1.1, 0.15);
     atto_ddelta(1.0, 1.0, 0.01);
@@ -147,7 +167,8 @@ static void test_ddelta(void)
     SHOULD_FAIL(atto_ddelta(1.0, 1.1, 0.01));
 }
 
-static void test_ddelta_negatives(void)
+static void
+test_ddelta_negatives(void)
 {
     atto_ddelta(-1.0, -1.0, 0.01);
     atto_ddelta(-1.0, -1.0, -0.01);
@@ -158,94 +179,111 @@ static void test_ddelta_negatives(void)
     SHOULD_FAIL(atto_ddelta(-1.0, -1.1, 0.01));
 }
 
-static void test_nan(void)
+static void
+test_nan(void)
 {
     atto_nan(NAN);
     atto_nan(nan(""));
     atto_nan(nanf(""));
 }
 
-static void test_nan_finite_float(void)
+static void
+test_nan_finite_float(void)
 {
     SHOULD_FAIL(atto_nan(1.0f));
 }
 
-static void test_nan_finite_double(void)
+static void
+test_nan_finite_double(void)
 {
     SHOULD_FAIL(atto_nan(1.0));
 }
 
-static void test_nan_infinity(void)
+static void
+test_nan_infinity(void)
 {
     SHOULD_FAIL(atto_nan(INFINITY));
 }
 
-static void test_inf(void)
+static void
+test_inf(void)
 {
     atto_inf(INFINITY);
     atto_inf(+INFINITY);
     atto_inf(-INFINITY);
 }
 
-static void test_inf_finite_float(void)
+static void
+test_inf_finite_float(void)
 {
     SHOULD_FAIL(atto_inf(1.0f));
 }
 
-static void test_inf_finite_double(void)
+static void
+test_inf_finite_double(void)
 {
     SHOULD_FAIL(atto_inf(1.0));
 }
 
-static void test_inf_nan(void)
+static void
+test_inf_nan(void)
 {
     SHOULD_FAIL(atto_inf(NAN));
 }
 
-static void test_plusinf(void)
+static void
+test_plusinf(void)
 {
     atto_plusinf(INFINITY);
     atto_plusinf(+INFINITY);
     SHOULD_FAIL(atto_plusinf(-INFINITY));
 }
 
-static void test_plusinf_finite_float(void)
+static void
+test_plusinf_finite_float(void)
 {
     SHOULD_FAIL(atto_plusinf(1.0f));
 }
 
-static void test_plusinf_finite_double(void)
+static void
+test_plusinf_finite_double(void)
 {
     SHOULD_FAIL(atto_plusinf(1.0));
 }
 
-static void test_plusinf_nan(void)
+static void
+test_plusinf_nan(void)
 {
     SHOULD_FAIL(atto_plusinf(NAN));
 }
 
-static void test_minusinf(void)
+static void
+test_minusinf(void)
 {
     atto_minusinf(-INFINITY);
     SHOULD_FAIL(atto_minusinf(INFINITY));
 }
 
-static void test_minusinf_finite_float(void)
+static void
+test_minusinf_finite_float(void)
 {
     SHOULD_FAIL(atto_minusinf(1.0f));
 }
 
-static void test_minusinf_finite_double(void)
+static void
+test_minusinf_finite_double(void)
 {
     SHOULD_FAIL(atto_minusinf(1.0));
 }
 
-static void test_minusinf_nan(void)
+static void
+test_minusinf_nan(void)
 {
     SHOULD_FAIL(atto_minusinf(NAN));
 }
 
-static void test_notfinite(void)
+static void
+test_notfinite(void)
 {
     atto_notfinite(INFINITY);
     atto_notfinite(+INFINITY);
@@ -255,17 +293,20 @@ static void test_notfinite(void)
     atto_notfinite(nan(""));
 }
 
-static void test_notfinite_finite_float(void)
+static void
+test_notfinite_finite_float(void)
 {
     SHOULD_FAIL(atto_notfinite(1.0f));
 }
 
-static void test_notfinite_finite_double(void)
+static void
+test_notfinite_finite_double(void)
 {
     SHOULD_FAIL(atto_notfinite(1.0));
 }
 
-static void test_finite(void)
+static void
+test_finite(void)
 {
     atto_finite(0.0f);
     atto_finite(-0.0f);
@@ -277,32 +318,38 @@ static void test_finite(void)
     atto_finite(-1.0);
 }
 
-static void test_finite_plusinf(void)
+static void
+test_finite_plusinf(void)
 {
     SHOULD_FAIL(atto_finite(INFINITY));
 }
 
-static void test_finite_minusinf(void)
+static void
+test_finite_minusinf(void)
 {
     SHOULD_FAIL(atto_finite(-INFINITY));
 }
 
-static void test_finite_nan_macro(void)
+static void
+test_finite_nan_macro(void)
 {
     SHOULD_FAIL(atto_finite(NAN));
 }
 
-static void test_finite_nan_call(void)
+static void
+test_finite_nan_call(void)
 {
     SHOULD_FAIL(atto_finite(nan("")));
 }
 
-static void test_finite_nanf_call(void)
+static void
+test_finite_nanf_call(void)
 {
     SHOULD_FAIL(atto_finite(nanf("")));
 }
 
-static void test_flag(void)
+static void
+test_flag(void)
 {
     atto_flag(1, 1);
     atto_flag(0xFF, 1);
@@ -318,14 +365,16 @@ static void test_flag(void)
     SHOULD_FAIL(atto_flag(0x07, 0xF0));
 }
 
-static void test_flag_when_none(void)
+static void
+test_flag_when_none(void)
 {
     /* atto_flag() checks for flag presence. To check for their absence,
      * atto_noflag() should be used instead; or even atto_eq(flags, 0). */
     SHOULD_FAIL(atto_flag(0, 0));
 }
 
-static void test_noflag(void)
+static void
+test_noflag(void)
 {
     atto_noflag(0, 1);
     atto_noflag(2, 1);
@@ -338,7 +387,8 @@ static void test_noflag(void)
     SHOULD_FAIL(atto_noflag(0x07, 0x04));
 }
 
-static void test_streq(void)
+static void
+test_streq(void)
 {
     const char a[] = "hello";
     const char b[] = "hello";
@@ -351,12 +401,13 @@ static void test_streq(void)
     atto_streq(a, b, 4);
     atto_streq(a, b, 5);
     atto_eq(a[5], b[5]);
-    atto_streq(a, b, 6); // Null terminator
+    atto_streq(a, b, 6);  // Null terminator
     atto_streq("", "", 0);
     SHOULD_FAIL(atto_streq(a, c, 5));
 }
 
-static void test_memeq(void)
+static void
+test_memeq(void)
 {
     const uint8_t a[] = {255, 255, 255, 255, 255};
     const uint8_t b[] = {255, 255, 255, 255, 255};
@@ -374,7 +425,8 @@ static void test_memeq(void)
     SHOULD_FAIL(atto_memeq(c, a, 5));
 }
 
-static void test_memneq(void)
+static void
+test_memneq(void)
 {
     const uint8_t a[] = {255, 255, 255, 255, 255};
     const uint8_t b[] = {255, 255, 255, 255, 255};
@@ -391,7 +443,8 @@ static void test_memneq(void)
     SHOULD_FAIL(atto_memneq(a, b, 5));
 }
 
-static void test_zeros(void)
+static void
+test_zeros(void)
 {
     const uint8_t a[] = {0, 0, 0, 0, 0};
     const uint8_t b[] = {0, 0, 255, 255, 255};
@@ -409,7 +462,8 @@ static void test_zeros(void)
     SHOULD_FAIL(atto_zeros(b, 5U));
 }
 
-static void test_nzeros(void)
+static void
+test_nzeros(void)
 {
     const uint8_t a[] = {0, 0, 0, 0, 0};
     const uint8_t b[] = {0, 0, 255, 255, 255};
@@ -428,17 +482,20 @@ static void test_nzeros(void)
     SHOULD_FAIL(atto_nzeros(a, 5U));
 }
 
-static void test_fail(void)
+static void
+test_fail(void)
 {
     SHOULD_FAIL(atto_fail());
 }
 
-static void test_at_the_end_some_tests_have_failed(void)
+static void
+test_at_the_end_some_tests_have_failed(void)
 {
     atto_eq(atto_at_least_one_fail, 1);
 }
 
-int main(void)
+int
+main(void)
 {
     test_initially_no_test_have_failed();
     test_assert();

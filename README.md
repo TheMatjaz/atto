@@ -7,9 +7,9 @@ Atto - the microscopic C unit test framework
 [![GitHub](https://img.shields.io/github/license/TheMatjaz/atto)](https://github.com/TheMatjaz/atto/blob/master/LICENSE.md)
 
 Atto is the simplest-to-use C unit test framework, in just one header file,
-without `malloc()`, without `fork()`, without dependencies, ready for
-embedded systems that can at least call `printf()` - and even those who cannot,
-can easily adapt it!
+without `malloc()`, without `fork()`, without dependencies, ready for embedded
+systems that can at least call `printf()` - and even those who cannot, can
+easily adapt it!
 
 Most probably you will understand most about Atto if you just read its
 header: [`atto.h`](src/atto.h). I promise it's not that long, if you exclude
@@ -24,12 +24,11 @@ The goal of a unit test is generally very simple: verify that the obtained
 value equals to the expected one. More generally if a boolean expression is
 true (e.g. a value is in the allowed range).
 
-There are so many complex unit test frameworks to do this in C and C++
-which just increases complexity of the whole project. Suppose you are just
-writing a simple program and want to test it. Oh, boy! Start managing the
-dependencies for the framework, check if you can install it, maybe you need
-Docker etc. Some frameworks even require `fork()` - how could that work on
-an embedded system?
+There are so many complex unit test frameworks to do this in C and C++ which
+just increases complexity of the whole project. Suppose you are just writing a
+simple program and want to test it. Oh, boy! Start managing the dependencies
+for the framework, check if you can install it, maybe you need Docker etc. Some
+frameworks even require `fork()` - how could that work on an embedded system?
 
 Atto is born to remove all of that complexity. Heavily inspired by
 [MinUnit](http://www.jera.com/techinfo/jtns/jtn002.html), which has **just 3
@@ -41,9 +40,9 @@ The output is basic, but enough: indicates just where the test case failed, by
 filename and line number. Open that file, go to that line. There is the error.
 Start using the debugger around that point.
 
-Passing tests are not printed, to avoid cluttering the output.
-You can still explicitly request a status report at any point in the 
-test suite codebase (e.g. after a cluster of testcases of similar nature)
+Passing tests are not printed, to avoid cluttering the output. You can still
+explicitly request a status report at any point in the test suite codebase (
+e.g. after a cluster of testcases of similar nature)
 with `atto_report()`.
 
 
@@ -111,23 +110,22 @@ Check some of my other personal projects, where I use Atto for unit testing!
 - [LibAscon](https://github.com/TheMatjaz/LibAscon)
 - [LibISAAC](https://github.com/TheMatjaz/LibISAAC)
 
-
 ### Complete recipe for the creation of a test suite with Atto
 
 1. Add the files `atto.h`, `atto.c` to your project:
-   - You can copy the whole `src` folder into your project.
-     This is probably the fastest and simplest solution.
+   - You can copy the whole `src` folder into your project. This is probably
+     the fastest and simplest solution.
    - Alternatively, use `git subtree` to include this repo into your own
 2. Create a file with your tests, say `test.c`.
 3. Add test case functions returning `void` to `test.c`, as the two
-  `test_sqrt_*` functions in the example above.
-4. In each test case call `atto_assert()`, `atto_eq()`, `atto_flag()` etc.
-   to verify the values you are testing. On a fail, the test case is terminated
+   `test_sqrt_*` functions in the example above.
+4. In each test case call `atto_assert()`, `atto_eq()`, `atto_flag()` etc. to
+   verify the values you are testing. On a fail, the test case is terminated
    early and the lines of code after that are not executed.
 5. Add a `main()` function to `test.c` which returns `atto_at_least_one_fail`.
-   By doing so, the exit code of the test executable will be `1` in case at 
+   By doing so, the exit code of the test executable will be `1` in case at
    least one test failed. Particularly useful when running the test executables
-   in a pipeline that should stop when something is broken. Of course on 
+   in a pipeline that should stop when something is broken. Of course on
    embedded systems one can use `atto_at_least_one_fail` in different ways, as
    there is no returning from `main`; for example by transmitting it via UART.
 6. Call the test case functions from the `main()`.
@@ -135,9 +133,8 @@ Check some of my other personal projects, where I use Atto for unit testing!
 8. Check its standard output and the process exit code for failed tests.
 9. Bonus: add some calls to `atto_report()` wherever you want in the test suite
    code. At least one call at the very end (before the `main` returns)
-   is suggested, but also after a set of similar test cases is a good choice
-   to see where something is making the test suite crash, in case so happens.
-
+   is suggested, but also after a set of similar test cases is a good choice to
+   see where something is making the test suite crash, in case so happens.
 
 ### A test case is failing. Now what?
 
@@ -150,19 +147,19 @@ FAIL | File: /path/to/some_project/test.c:182 | Test case: test_valid_input_leng
 1. Open the file `/path/to/some_project/test.c`
 2. Go to line 182 (use some keyboard shortcut), which is in the function
    `test_valid_input_length()`
-   
-   Note: sometimes the `path:linenumber` pattern is identified as
-   clickable by your IDE. Maybe that speeds up your search.
-3. The assertion on that specific line failed. Now up to you to debug why.
-   The easiest way is to place a debugger breakpoint earlier in the test case.
-   
-Once the standard output does not contain any `FAIL` lines and the exit code
-of the process is `0`, you are good to go!
+
+   Note: sometimes the `path:linenumber` pattern is identified as clickable by
+   your IDE. Maybe that speeds up your search.
+3. The assertion on that specific line failed. Now up to you to debug why. The
+   easiest way is to place a debugger breakpoint earlier in the test case.
+
+Once the standard output does not contain any `FAIL` lines and the exit code of
+the process is `0`, you are good to go!
 
 
 ### But this framework does not fit my needs!
 
-It may not be the best solution for your scenario - it was born for my
-personal projects where I needed something simple. You are more than welcome
-to customize it to your needs within your project or simply
-to use other frameworks.
+It may not be the best solution for your scenario - it was born for my personal
+projects where I needed something simple. You are more than welcome to
+customize it to your needs within your project or simply to use other
+frameworks.

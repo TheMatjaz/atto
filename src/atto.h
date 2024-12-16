@@ -2,7 +2,7 @@
  * @file
  * Atto - the microscopic C unit test framework
  *
- * @copyright Copyright © 2019-2021, Matjaž Guštin <dev@matjaz.it>
+ * @copyright Copyright © 2019-2024, Matjaž Guštin <dev@matjaz.it>
  * <https://matjaz.it>. All rights reserved.
  * @license BSD 3-Clause License
  *
@@ -41,12 +41,12 @@ extern "C"
 /**
  * Semantic version of this file and framework.
  */
-#define ATTO_VERSION "1.4.0"
+#define ATTO_VERSION "1.4.1"
 
-#include <stdio.h>  /* For printf() */
 #include <math.h>   /* For fabs(), fabsf(), isnan(), isinf(), isfinite() */
-#include <string.h> /* For strncmp(), memcmp() */
 #include <stddef.h> /* For size_t */
+#include <stdio.h>  /* For printf() */
+#include <string.h> /* For strncmp(), memcmp() */
 
 /**
  * Boolean indicating if all tests passed successfully (when 0) or not.
@@ -94,7 +94,6 @@ extern size_t atto_counter_assert_passes;
  */
 #define ATTO_DOUBLE_EQ_ABSTOL (1e-8)
 
-
 /**
  * Prints a brief report message providing the point where this report is
  * and the amount of successes and failures at this point.
@@ -105,11 +104,15 @@ extern size_t atto_counter_assert_passes;
  * multiple of these reports may be added to aid debugging in understanding
  * where the issue arisees.
  */
-#define atto_report() \
-    printf("REPORT | File: %s:%d | Test case: %s" \
-           " | Passes: %5zu | Failures: %5zu\n", \
-           __FILE__, __LINE__, __func__,          \
-           atto_counter_assert_passes, atto_counter_assert_failures)
+#define atto_report()                          \
+    printf(                                    \
+        "REPORT | File: %s:%d | Test case: %s" \
+        " | Passes: %5zu | Failures: %5zu\n",  \
+        __FILE__,                              \
+        __LINE__,                              \
+        __func__,                              \
+        atto_counter_assert_passes,            \
+        atto_counter_assert_failures)
 
 /**
  * Verifies if the given boolean expression is true.
@@ -133,17 +136,22 @@ extern size_t atto_counter_assert_passes;
  * atto_assert(3 < 1);  // Fails
  * ```
  */
-#define atto_assert(expression) do {                   \
-    if (!(expression)) {                               \
-        printf("FAIL | File: %s:%d | Test case: %s\n", \
-               __FILE__, __LINE__, __func__);          \
-        atto_counter_assert_failures++;                \
-        atto_at_least_one_fail = 1;                    \
-        return;                                        \
-    } else {                                           \
-        atto_counter_assert_passes++;                  \
-    }                                                  \
-} while (0)
+#define atto_assert(expression)                                                           \
+    do                                                                                    \
+    {                                                                                     \
+        if (!(expression))                                                                \
+        {                                                                                 \
+            printf("FAIL | File: %s:%d | Test case: %s\n", __FILE__, __LINE__, __func__); \
+            atto_counter_assert_failures++;                                               \
+            atto_at_least_one_fail = 1;                                                   \
+            return;                                                                       \
+        }                                                                                 \
+        else                                                                              \
+        {                                                                                 \
+            atto_counter_assert_passes++;                                                 \
+        }                                                                                 \
+    }                                                                                     \
+    while (0)
 
 /**
  * Verifies if the given boolean expression is true.
@@ -304,8 +312,7 @@ extern size_t atto_counter_assert_passes;
  * atto_ddelta(1.0, 2.0, 0.1);         // Fails
  * ```
  */
-#define atto_ddelta(a, b, delta) \
-    atto_assert(fabs((a) - (b)) <= fabs(delta))
+#define atto_ddelta(a, b, delta) atto_assert(fabs((a) - (b)) <= fabs(delta))
 
 /**
  * Verifies if two double-precision floating point values are within a fixed
@@ -448,7 +455,7 @@ extern size_t atto_counter_assert_passes;
  * atto_noflag(0x07, 0xF8);    // Passes
  * atto_noflag(0x07, 0x04);    // Fails
  * ```
-*/
+ */
 #define atto_noflag(value, mask) atto_assert(((value) & (mask)) == 0)
 
 /**
@@ -465,8 +472,7 @@ extern size_t atto_counter_assert_passes;
  * atto_streq("abcd", "ABCD", 4);    // Fails, different casing
  * ```
  */
-#define atto_streq(a, b, maxlen) \
-    atto_assert(strncmp((a), (b), (maxlen)) == 0)
+#define atto_streq(a, b, maxlen) atto_assert(strncmp((a), (b), (maxlen)) == 0)
 
 /**
  * Verifies if two memory sections are equal up to a given length.
@@ -495,7 +501,7 @@ extern size_t atto_counter_assert_passes;
  * atto_memneq("abcd", "abcd", 100);  // UNDEFINED as exceeding known memory
  * atto_memneq("abcd", "abCD", 4);    // Passes
  * ```
-*/
+ */
 #define atto_memneq(a, b, len) atto_assert(memcmp((a), (b), len) != 0)
 
 /**
@@ -513,11 +519,16 @@ extern size_t atto_counter_assert_passes;
  * atto_zeros("\0\0\0\0", 4);    // Passes
  * atto_zeros("\0\0\0\0", 100);  // UNDEFINED as exceeding known memory
  * ```
-*/
-#define atto_zeros(x, len) do { \
-        for (size_t __atto_idx = 0; __atto_idx < (size_t)(len); __atto_idx++) \
-        { atto_eq(((uint8_t*)(x))[__atto_idx], 0); } \
-    } while(0)
+ */
+#define atto_zeros(x, len)                                                                    \
+    do                                                                                        \
+    {                                                                                         \
+        for (size_t atto_zeros_idx = 0U; atto_zeros_idx < ((size_t) (len)); atto_zeros_idx++) \
+        {                                                                                     \
+            atto_eq(((const unsigned char*) (x))[atto_zeros_idx], 0);                         \
+        }                                                                                     \
+    }                                                                                         \
+    while (0)
 
 /**
  * Verifies if a memory section is not completely filled with zeros
@@ -539,15 +550,22 @@ extern size_t atto_counter_assert_passes;
  * atto_nzeros("a\0c\0", 3);      // Passes
  * atto_nzeros("\0\0\0\0", 100);  // UNDEFINED as exceeding known memory
  * ```
-*/
-#define atto_nzeros(x, len) do { \
-        uint8_t __atto_all_zero = 1; \
-        for (size_t __atto_idx = 0; __atto_idx < (size_t)(len); __atto_idx++) \
-        { if(((uint8_t*)(x))[__atto_idx] != 0) \
-            { __atto_all_zero = 0; break; } \
-        } \
-        atto_false(__atto_all_zero); \
-    } while(0)
+ */
+#define atto_nzeros(x, len)                                                                      \
+    do                                                                                           \
+    {                                                                                            \
+        char atto_nzeros_all_zero = 1;                                                           \
+        for (size_t atto_nzeros_idx = 0U; atto_nzeros_idx < ((size_t) (len)); atto_nzeros_idx++) \
+        {                                                                                        \
+            if (((const unsigned char*) (x))[atto_nzeros_idx] != 0)                              \
+            {                                                                                    \
+                atto_nzeros_all_zero = 0;                                                        \
+                break;                                                                           \
+            }                                                                                    \
+        }                                                                                        \
+        atto_false(atto_nzeros_all_zero);                                                        \
+    }                                                                                            \
+    while (0)
 
 /**
  * Forces a failure of the test case, stopping it and reporting on standard
@@ -559,4 +577,4 @@ extern size_t atto_counter_assert_passes;
 }
 #endif
 
-#endif  /* ATTO_H */
+#endif /* ATTO_H */

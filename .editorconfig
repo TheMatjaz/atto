@@ -1,0 +1,29 @@
+root = true
+
+[*]
+# Encoding
+charset = utf-8
+
+# Newlines
+# NO END-OF-LINE SETTING HERE as it's forced to native in .gitattributes
+# equivalent to the Git core.autocrlf=true configuration.
+insert_final_newline = true
+
+# Indentation
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# Line of code
+max_line_length = 100
+trim_trailing_whitespace = true
+
+# Per-file type settings
+[{*.md,*.markdown}]
+max_line_length = 79
+indent_size = 3
+tab_width = 3
+
+[{*.yml,*.yaml,*.json}]
+indent_size = 2
+max_line_length = off
