@@ -34,9 +34,9 @@ jobs:
           cmake --version
           ${{ matrix.compiler }} --version
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_C_COMPILER=${{matrix.compiler}}
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DCMAKE_C_COMPILER=${{matrix.compiler}} --preset=${{matrix.compiler}}
       - name: Build all targets
-        run: cmake --build ${{github.workspace}}/build --parallel 8 --clean-first
+        run: cmake --build ${{github.workspace}}/build --parallel --clean-first
       - name: Self-test
         working-directory: ${{github.workspace}}/build
         run: ctest --output-on-failure
@@ -58,9 +58,9 @@ jobs:
         with:
           arch: amd64
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -G "CodeBlocks - NMake Makefiles"
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -G "CodeBlocks - NMake Makefiles" --preset=msvc
       - name: Build all targets
-        run: cmake --build ${{github.workspace}}/build --parallel 8 --clean-first
+        run: cmake --build ${{github.workspace}}/build --parallel --clean-first
       - name: Self-test
         working-directory: ${{github.workspace}}/build
         run: ctest --output-on-failure

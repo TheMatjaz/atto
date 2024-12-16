@@ -1,0 +1,55 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_STANDARD": "11",
+        "CMAKE_C_STANDARD_REQUIRED": true,
+        "CMAKE_C_EXTENSIONS": "OFF"
+      }
+    },
+    {
+      "name": "gcc",
+      "inherits": "default",
+      "generator": "Unix Makefiles",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_C_FLAGS_INIT": "-Wall -Wextra -pedantic -Wconversion -Wsign-conversion -Wdouble-promotion -Wfloat-equal -Wswitch-default -Wswitch-enum -Wuninitialized -Wunused-variable -Wpacked -Wshadow -Waggregate-return -Wformat-security -Wlogical-not-parentheses -Wmissing-declarations -Wnull-dereference -Wduplicated-cond -Wno-padded",
+        "CMAKE_C_FLAGS_DEBUG": "-O0 -g3 -DDEBUG=1",
+        "CMAKE_C_FLAGS_RELEASE": "-O3 -Werror",
+        "CMAKE_C_FLAGS_MINSIZEREL": "-Os -s -Werror"
+      }
+    },
+    {
+      "name": "clang",
+      "inherits": "default",
+      "generator": "Unix Makefiles",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_C_FLAGS_INIT": "-Weverything",
+        "CMAKE_C_FLAGS_DEBUG": "-O0 -g3 -coverage -DDEBUG=1",
+        "CMAKE_C_FLAGS_RELEASE": "-O3 -Werror",
+        "CMAKE_C_FLAGS_MINSIZEREL": "-Os -Werror"
+      }
+    },
+    {
+      "name": "msvc",
+      "inherits": "default",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_C_FLAGS_INIT": "-Wall -Qspectre -wd5045 -wd4996 -wd4127 -wd4710 -wd4711",
+        "CMAKE_C_FLAGS_DEBUG": "-Od -DDEBUG=1",
+        "CMAKE_C_FLAGS_RELEASE": "-O2 -WX",
+        "CMAKE_C_FLAGS_MINSIZEREL": "-O1 -WX"
+      }
+    }
+  ]
+}
